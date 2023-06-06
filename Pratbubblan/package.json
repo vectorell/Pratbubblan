@@ -7,13 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "npm run start": ""
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
+    "lowdb": "^6.0.1",
+    "morgan": "^1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
