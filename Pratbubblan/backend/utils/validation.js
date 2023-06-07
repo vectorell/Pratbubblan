@@ -28,11 +28,19 @@ export function validateUserBody(maybeUser) {
     if (maybeUser.mail === '') {
         return false
     }
+
+    if (typeof (maybeUser.password) !== "string") {
+        return false
+    } 
     
-    // Om maybeUser innehåller några andra keys än 'name' eller 'mail'
+    if (maybeUser.password === '') {
+        return false
+    }
+    
+    // Om maybeUser innehåller några andra keys än 'name', 'password' eller 'mail'
     const maybeUserKeys = Object.keys(maybeUser)
     // console.log(maybeUserKeys)
-    const extraFields = maybeUserKeys.filter(key => (key !== 'name') && (key !== 'mail'))
+    const extraFields = maybeUserKeys.filter(key => (key !== 'name') && (key !== 'mail') && (key !== 'password'))
     
     if (extraFields.length > 0) {
         return false
