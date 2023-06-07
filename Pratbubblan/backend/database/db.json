@@ -35,6 +35,18 @@
       "mail": "user5@example.com",
       "password": "$2b$10$a8Fh6bAvRtriOKcy.ozUDeHHZrrK2/nC6ID3dn7FNFKiyRzBvOcF.",
       "uuid": 489476776208
+    },
+    {
+      "name": "user6",
+      "mail": "user5@example.com",
+      "password": "$2b$10$MG0ajzcAxtbSO1sKwU8GJuQocHf7f.bVSTgWXUTRZgtH328vHmyvK",
+      "uuid": 98085614295
+    },
+    {
+      "name": "user7",
+      "mail": "user5@example.com",
+      "password": "$2b$10$U/P/2VKKhbz3ZAytqf2Y.OBZJG77u/ITtVR6qFJ.be5cMczyfl/Pq",
+      "uuid": 540053472889
     }
   ]
 }
