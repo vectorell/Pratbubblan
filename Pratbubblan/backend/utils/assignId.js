@@ -1,5 +1,5 @@
 // import { getDb } from "../database/database.js";
-import { db } from "../routes/userRoutes.js"
+// import { db } from "../routes/userRoutes.js"
 
 
 // export async function assignId(idtype, dblist) {

@@ -5,13 +5,18 @@ import { random } from '../utils/assignId.js'
 import jwt from 'jsonwebtoken'
 import { generateToken, secretKey } from '../utils/.secret.js'
 import { handlePassword } from '../utils/.secret.js'
-import bcrypt from 'bcrypt'
-
+import bcryptjs from 'bcryptjs'
+import User from '../../models/Users.js'
+import { connectDb } from '../../config/db.js'
+// import { db } from '../../config/db.js'
+import config from 'config'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const router = express.Router()
 router.use( express.json() )
 
-export let db = getDb('db.json', {})
+// export let db = getDb('db.json', {})
 
 /****** DENNA ROUTES UPPGIFTER ******
  * 1. Hämta alla användare - OK
@@ -87,22 +92,53 @@ router.put('/:uuid', async (req,res) => {
 // 4. [POST] - Lägg till användare
 router.post('/', async (req, res) => {
     let maybeUser = req.body
-    let password = req.body.password
     
     // VALIDERING
     let approved = validateUserBody(maybeUser)
-    
-    if (approved) {
-        await db.read()
-        maybeUser.uuid = random()
-        maybeUser.password = await handlePassword(password)
-        db.data.users?.push(maybeUser)
-        await db.write()
-        res.sendStatus(200)
-        return
-    } else {
+    if (!approved) {
         res.sendStatus(400)
         return
+    }
+
+    // Försök skapa en ny instans av en användare
+    try {
+        // Kolla om användare redan finns (genom mailadress)
+        await connectDb()
+        const filteredUsers = await User.find({ mail: req.body.mail})
+        if (filteredUsers.length > 0) {
+            res.sendStatus(400)
+            return
+        }
+
+        // Skapa en ny instans av en användare
+        maybeUser = new User({
+            name: req.body.name,
+            mail: req.body.mail,
+            password: req.body.password
+        })
+
+        // Kryptera användarens lösenord
+        const salt = await bcryptjs.genSalt(10)
+        maybeUser.password = await bcryptjs.hash(password, salt)
+
+
+        // Spara användaren till databasen
+        await maybeUser.save()
+
+
+        const payload = { 
+            user: { 
+                id: maybeUser.id 
+            }
+        }
+
+        // TODO: Ändra tillbaka till 3600
+        const token = jwt.sign(payload, secretKey, {expiresIn: 36000})
+        res.json({ token })
+
+
+    } catch (error) {
+        res.sendStatus(400)
     }
 
 })

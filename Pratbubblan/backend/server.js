@@ -7,12 +7,16 @@ import authRoute from './routes/authRoutes.js'
 import conversationRoute from './routes/conversationRoutes.js'
 import canalRoute from './routes/canalRoutes.js'
 import morgan from 'morgan'
+import { connectDb } from '../config/db.js'
+import { check, validationResult } from 'express-validator'
 
 const app = express()
 dotenv.config()
 const port = process.env.PORT || 7344
 // const port = 7344
 
+// Anslut databas
+connectDb()
 
 app.use( cors() )
 app.use( express.json() )
