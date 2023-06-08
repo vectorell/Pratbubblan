@@ -36,19 +36,19 @@ app.use('/api/users', userRoute)
 // ROUTE - Auth (behöver auth)
 /** - Auth Middleware
  *  - ***** ANVÄNDARDEL *****
- *      - Redigera användare
- *      - Lägga till användare
- *      - Radera användare 
+ *      - Redigera användare - OK
+ *      - Lägga till användare - OK
+ *      - Radera användare - OK
  *  - ***** KONVERSATIONSDEL *****
- *      - Skapa ny konversation
- *      - Hämta alla konversationer för en användare
- *      - Hämta specifik konversation
- *      - Radera en konversation
+ *      - Skapa ny konversation 
+ *      - Hämta alla konversationer för en användare 
+ *      - Hämta specifik konversation 
+ *      - Radera en konversation 
  *  - ***** KANALDEL *****
  *      - Joina låsta rum 
- *      - Skapa ny kanal
- *      - Hämta specifik kanal
- *      - Hämta alla kanaler
+ *      - Skapa ny kanal 
+ *      - Hämta specifik kanal 
+ *      - Hämta alla kanaler 
  *      - Ta bort en kanal */
 app.use('/api/auth', authRoutes)
 
