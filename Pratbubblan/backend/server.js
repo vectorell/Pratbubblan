@@ -3,7 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 import userRoute from './routes/userRoutes.js'
-import authRoute from './routes/authRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 import conversationRoute from './routes/conversationRoutes.js'
 import canalRoute from './routes/canalRoutes.js'
 import morgan from 'morgan'
@@ -27,21 +27,36 @@ app.use((req, res, next) => {
 
 app.use(morgan('common'))
 
-// ROUTE - användare
-// (lägga till ny, logga in, hämta anv.detaljer, uppdatera användare)
+// ROUTE - användare (behöver ej auth)
+/** - Logga in
+ *  - Hämta användare
+ *  - Hämta användardetaljer */
 app.use('/api/users', userRoute)
 
-// ROUTE - auth
-// (generera JWT-token för auth, validera JWT-token, kontrollera authent/authoriz med middleware)
-app.use('/api/login', authRoute)
+// ROUTE - Auth (behöver auth)
+/** - Auth Middleware
+ *  - ***** ANVÄNDARDEL *****
+ *      - Redigera användare
+ *      - Lägga till användare
+ *      - Radera användare 
+ *  - ***** KONVERSATIONSDEL *****
+ *      - Skapa ny konversation
+ *      - Hämta alla konversationer för en användare
+ *      - Hämta specifik konversation
+ *      - Radera en konversation
+ *  - ***** KANALDEL *****
+ *      - Joina låsta rum 
+ *      - Skapa ny kanal
+ *      - Hämta specifik kanal
+ *      - Hämta alla kanaler
+ *      - Ta bort en kanal */
+app.use('/api/auth', authRoutes)
 
-// ROUTE - konversationer
-// (skapa ny konv, hämta specifik konv, hämta alla konv för en anv, uppdatera en konv, radera en konv)
-app.use('/api/conversations', conversationRoute)
 
-// ROUTE - kanaler
-// (skapa ny kanal, hämta specifik kanal, hämta alla kanaler, uppdatera en kanal, ta bort en kanal)
-app.use('/api/viewcanals', canalRoute)
+
+
+
+
 
 
 
@@ -49,3 +64,14 @@ app.use('/api/viewcanals', canalRoute)
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}...`)
 })
+
+
+// Routes nedan kanske ej behövs!
+
+// ROUTE - konversationer
+// (skapa ny konv, hämta specifik konv, hämta alla konv för en anv, uppdatera en konv, radera en konv)
+// app.use('/api/conversations', conversationRoute)
+
+// ROUTE - kanaler
+// (skapa ny kanal, hämta specifik kanal, hämta alla kanaler, uppdatera en kanal, ta bort en kanal)
+// app.use('/api/viewcanals', canalRoute)

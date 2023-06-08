@@ -9,18 +9,14 @@ import { LoginPage } from './routes/Login/LoginPage.jsx'
 
 export const router = createBrowserRouter([
     {
-        path: '',
-        element: <LoginPage />,
-        children: [
-            {
-                path: ' ',
-                element: <App />
-            },
-            {
-
-            }
-        ]
+        path: '/',
+        element: <LoginPage />
+    },
+    {
+      path: '/auth',
+      element: <App />,
     }
+
 ])
 
 
