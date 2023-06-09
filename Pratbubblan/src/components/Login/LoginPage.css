@@ -1,0 +1,27 @@
+.LoginPage {
+    border: 1px solid black;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.LoginPage form {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0.5em;
+}
+
+.LoginPage div {
+    margin: 0em 0.5em;
+}
+
+.LoginPage h1 {
+    margin: 0.5em;
+}
+
+.LoginPage p {
+    margin: 0em 0.3em;
+}

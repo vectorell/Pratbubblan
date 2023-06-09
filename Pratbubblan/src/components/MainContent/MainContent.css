@@ -1,0 +1,23 @@
+.MainContent {
+    width: 100vw;
+    height: 100%;
+    display: flex;
+}
+
+/* Side content div */
+.MainContent div:nth-child(1) {
+    border:1px solid black;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content div */
+.MainContent div:nth-child(2) {
+    border:1px solid black;
+    width: 70%;
+}
+
+a.active {
+    /* border: 1px solid red; */
+}

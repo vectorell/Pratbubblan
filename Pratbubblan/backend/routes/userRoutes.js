@@ -16,20 +16,40 @@ router.use( express.json() )
 
 // [GET] - Hämta alla användare
 router.get('/', async (req,res) => {
-    await db.read()
-    console.log(secretKey)
-    res.send(db.data)
+
+    try {
+        const users = await User.find()
+        res.send(users)
+        return
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(400)
+    }
 })
 
 // [GET] - Hämta specifik användare
 router.get('/:uuid', async (req,res) => {
-    const uuid = Number(req.params.uuid)
+    const uuid = req.params.uuid
 
-    await db.read()
-    let foundUser = await db.data.users.find(user => user.uuid === uuid) 
+    try {
+        await connectDb()
+        let foundUser = await User.findOne({ _id: uuid })
 
-    foundUser !== undefined ? res.send(foundUser)
-    : res.sendStatus(400)
+        if(foundUser !== undefined) {
+            console.log('Found user!: ', foundUser)
+            res.status(302).send(foundUser) // 302 Found
+            return
+        } else {
+            console.log('Could not find user.. Aborting..')
+            res.sendStatus(404) // 404 Not Found
+        }
+        
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(400)
+        return
+    }
+    return
 })
 
 

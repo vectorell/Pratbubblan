@@ -1,16 +1,27 @@
 import './App.css'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
+import { LoginPage } from './components/Login/LoginPage'
+import { MainContent } from './components/MainContent/MainContent'
+import { getAllChannels } from './utils/AJAX/channels/getAllChannels'
+import { channelsState } from './recoil/atoms/channelsState'
+import { useRecoilState } from 'recoil'
+import { useEffect } from 'react'
 
 function App() {
+  // const [channels, setChannels] = useRecoilState(channelsState)
+  
+
+
+  // setChannels(getAllChannels())
 
   return (
-    <>
-      <h1>APP-komponenten</h1>
+    <div className="App">
       <div>
-        {/* <NavLink to=""> Logga in</NavLink> */}
+        <LoginPage/>
       </div>
+      <MainContent/>
     
-    </>
+    </div>
   )
 }
 

@@ -21,7 +21,9 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    conversationIds: [],
+    messages: []
 })
 
 const User = mongoose.model('user', UserSchema)
