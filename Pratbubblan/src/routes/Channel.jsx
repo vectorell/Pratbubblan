@@ -55,6 +55,14 @@ export function Channel() {
     async function handleSend(e) {
         e.preventDefault()
 
+        function containsOnlySpaces(string) {
+            return /^\s*$/.test(string)
+        }
+
+        if (containsOnlySpaces(messageInput.current.value)) {
+            return
+        }
+
         if (messageInput.current.value === '') {
             return
         }
@@ -68,6 +76,7 @@ export function Channel() {
         }
 
         await postChannelMessage(msgObject)
+        messageInput.current.value = ''
 
         let fetchedChannels = await getAllChannels()
         setChannels(await fetchedChannels)
@@ -76,7 +85,6 @@ export function Channel() {
             const updatedMessages = [...prevChannel.messages, msgObject];
             return { ...prevChannel, messages: updatedMessages }
         })
-
     }
 
 
@@ -85,8 +93,8 @@ export function Channel() {
 
     return (
         <div className="Channel">
-            <div>
-                <h2> Kanalen </h2>  
+            <div className="channel-title">
+                <h2> Kanal: </h2>  
                 <h1>{activeChannel && activeChannel.channelName} </h1>
             </div>
 

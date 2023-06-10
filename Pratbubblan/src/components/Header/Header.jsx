@@ -63,7 +63,8 @@ export function Header() {
             {isLoggedIn && (
                 <div>
                     <p>Inloggad som <strong>{isLoggedIn.name}</strong></p>
-                    {/* <button> Logga ut </button> */}
+                    <button> Redigera konto </button>
+                    <button> Logga ut </button>
                 </div>
             )}
 

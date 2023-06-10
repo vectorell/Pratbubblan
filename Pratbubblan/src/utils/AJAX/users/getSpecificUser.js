@@ -12,6 +12,5 @@ export async function getSpecificUser(id) {
         name: parsedResponse.name,
         _id: parsedResponse._id,
     }
-    console.log(sendBackUser)
     return sendBackUser
 }

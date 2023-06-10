@@ -22,11 +22,13 @@
 
 .DmList a:hover {
     color: rgb(255, 255, 255);
+    transition: 0.2s;
 }
 
 .DmList a {
     color: rgb(48, 152, 255);
     text-decoration: none;
+    transition: 0.2s;
 }
 
 .DmList a.active {

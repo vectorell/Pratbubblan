@@ -37,8 +37,8 @@ export function ChannelList() {
                         disabled={!isLoggedIn}
                         to={`/${channel._id}`} 
                         key={index}>
-                            {isLoggedIn ? <p>{channel.channelName} (unlocked)</p>
-                            : <p>{channel.channelName} (locked)</p>
+                            {isLoggedIn ? <p>{channel.channelName} (upplåst)</p>
+                            : <p>{channel.channelName} (låst)</p>
                             }
                             
                         

@@ -13,7 +13,7 @@ export function DmList() {
 
     function filterOutLoggedInUser() {
         // console.log(userLoggedIn)
-        let filteredUsers = users.filter(user => user.name !== userLoggedIn)
+        let filteredUsers = users.filter(user => user.name !== userLoggedIn.name)
         return filteredUsers
     }
     useEffect(() => {
