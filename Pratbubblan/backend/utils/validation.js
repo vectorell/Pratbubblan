@@ -88,7 +88,7 @@ export function validateChannel(maybeChannel) {
 }
 
 
-export function validateMsg(maybeMsg) {
+export function validateDmMsg(maybeMsg) {
 
     if (!maybeMsg) {
         console.log("!maybeMsg")
@@ -132,21 +132,69 @@ export function validateMsg(maybeMsg) {
         console.log("recieverId === ''")
         return false
     }
-
-    if (typeof (maybeMsg.belongsTo) !== "string") {
-        console.log('belongsTo !== "string"')
-        return false
-    } 
-    
-    if (maybeMsg.belongsTo === '') {
-        console.log("belongsTo === ''")
-        return false
-    }
     
     // Om maybeMsg innehåller några andra keys än spec
     const maybeMsgKeys = Object.keys(maybeMsg)
     // console.log(maybeMsgKeys)
-    const extraFields = maybeMsgKeys.filter(key => (key !== 'senderId') && (key !== 'recieverId') && (key !== 'msgBody') && (key !== 'belongsTo') && (key !== 'sentAt'))
+    const extraFields = maybeMsgKeys.filter(key => (key !== 'senderId') && (key !== 'recieverId') && (key !== 'msgBody') && (key !== 'sentAt'))
+    
+    if (extraFields.length > 0) {
+        return false
+    }
+
+    return true
+}
+
+
+export function validateChannelMsg(maybeChannelMessage) {
+
+    if (!maybeChannelMessage) {
+        console.log("!maybeChannelMessage")
+        console.log(`POST /api/messages ${!maybeChannelMessage}`)
+        return false
+    }
+    
+    
+    if (typeof maybeChannelMessage !== 'object') {
+        console.log("maybeChannelMessage !== 'object'")
+        console.log(`POST /api/messages ${!maybeChannelMessage}`)
+        return false
+    }
+    
+    if (typeof (maybeChannelMessage.msgBody) !== "string") {
+        console.log('msgBody !== string')
+        return false
+    }
+    
+    if (maybeChannelMessage.msgBody === '') {
+        console.log("msgBody === ''")
+        return false
+    }
+    
+    if (typeof (maybeChannelMessage.senderId) !== "string") {
+        console.log('senderId !== "string"')
+        return false
+    } 
+    
+    if (maybeChannelMessage.senderId === '') {
+        console.log("senderId === ''")
+        return false
+    }
+
+    if (typeof (maybeChannelMessage.recieverId) !== "string") {
+        console.log('recieverId !== "string"')
+        return false
+    } 
+    
+    if (maybeChannelMessage.recieverId === '') {
+        console.log("recieverId === ''")
+        return false
+    }
+    
+    // Om maybeChannelMessage innehåller några andra keys än spec
+    const maybeChannelMessageKeys = Object.keys(maybeChannelMessage)
+    // console.log(maybeChannelMessageKeys)
+    const extraFields = maybeChannelMessageKeys.filter(key => (key !== 'senderId') && (key !== 'recieverId') && (key !== 'msgBody') && (key !== 'sentAt'))
     
     if (extraFields.length > 0) {
         return false

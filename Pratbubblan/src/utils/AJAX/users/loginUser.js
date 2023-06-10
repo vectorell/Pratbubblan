@@ -1,5 +1,5 @@
-let username = 'pelle1337'
-let password = 'pelle1337'
+// let username = 'pelle1337'
+// let password = 'pelle1337'
 
 
 export async function loginUser(username, password) {
@@ -22,11 +22,11 @@ export async function loginUser(username, password) {
         let parsedData = await response.json()
         console.log(parsedData)
 
-        return true
+        return parsedData
         
     } catch (error) {
         console.log(error)
-        return false
+        return
     }
 }
 

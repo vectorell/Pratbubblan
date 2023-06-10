@@ -1,6 +1,6 @@
 import './App.css'
 import { NavLink, Outlet } from 'react-router-dom'
-import { LoginPage } from './components/Login/LoginPage'
+import { Header } from './components/Header/Header'
 import { MainContent } from './components/MainContent/MainContent'
 import { getAllChannels } from './utils/AJAX/channels/getAllChannels'
 import { channelsState } from './recoil/atoms/channelsState'
@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        <LoginPage/>
+        <Header/>
       </div>
       <MainContent/>
     

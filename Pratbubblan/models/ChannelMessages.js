@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MessageSchema = new mongoose.Schema({
+const ChannelMessageSchema = new mongoose.Schema({
     msgId: String,
     senderId: String,
     recieverId: String,
@@ -8,5 +8,5 @@ const MessageSchema = new mongoose.Schema({
     sentAt: { type: Date, default: Date.now() }
 })
 
-const Message = mongoose.model('Message', MessageSchema)
-export default Message
+const ChannelMessage = mongoose.model('Channelmessage', MessageSchema)
+export default ChannelMessage

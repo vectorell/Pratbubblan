@@ -1,6 +1,6 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import { validateChannel, validateMsg, validateUserBody } from '../utils/validation.js'
+import { validateChannel, validateDmMsg, validateUserBody, validateChannelMsg } from '../utils/validation.js'
 import { connectDb } from '../../config/db.js'
 import { generateToken, secretKey } from '../utils/.secret.js'
 import bcryptjs from 'bcryptjs'
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
     
     // Om ej användare finns, skicka felmeddelande:
     if (!maybeUser) {
-        return res.sendStatus(400)
+        return res.sendStatus(404)
     }
     
     if (maybeUser) {
@@ -92,7 +92,12 @@ router.post('/login', async (req, res) => {
         
             // Skicka tillbaka JWT-token
             console.log('Login successful! Token: ', {token})
-            res.send({ token })
+            let response = {
+                token: token,
+                uuid: maybeUser._id,
+                name: maybeUser.name
+            }
+            res.send( response )
             return
         }
     }
@@ -346,7 +351,7 @@ router.post('/channels', async (req, res) => {
 router.post('/messages', async (req, res) => {
     let maybeMsg = req.body
 
-    let validMessage = validateMsg(maybeMsg)
+    let validMessage = validateDmMsg(maybeMsg)
 
     if (!validMessage) {
         return res.sendStatus(400)
@@ -356,7 +361,6 @@ router.post('/messages', async (req, res) => {
         msgBody: req.body.msgBody,
         senderId: req.body.senderId,
         recieverId: req.body.recieverId,
-        belongsTo: req.body.belongsTo,
         msgId: randomUUID()
     }
 
@@ -373,13 +377,48 @@ router.post('/messages', async (req, res) => {
         // console.log(User.findOne({ _id: validMessage.senderId}))
     
     // Lägga in validMessage till belongsTo
-    
+    await Channel.updateOne(
+        { _id: validMessage.belongsTo}, 
+        {$push: { messages: {$each: [validMessage]} }})
 
     // 
     // await User.save()
 
     console.log(validMessage)
     res.send(maybeMsg)
+})
+
+
+// POST - nytt kanalmeddelande
+router.post('/channelmessages', async (req, res) => {
+    let maybeChannelMsg = req.body
+
+    let validChannelMessage = validateChannelMsg(maybeChannelMsg)
+
+    if (!validChannelMessage) {
+        return res.sendStatus(400)
+    }
+
+    validChannelMessage = {
+        msgBody: req.body.msgBody,
+        senderId: req.body.senderId,
+        recieverId: req.body.recieverId,
+        msgId: randomUUID()
+    }
+
+    // Lägga in validChannelMessage till användarens messages
+    await User.updateOne(
+        { _id: validChannelMessage.senderId}, 
+        {$push: { messages: {$each: [validChannelMessage]} }})
+
+    // Lägga in validChannelMessage till kanalens messages
+    await Channel.updateOne(
+        { _id: validChannelMessage.recieverId}, 
+        {$push: { messages: {$each: [validChannelMessage]} }})
+
+
+    console.log(validChannelMessage)
+    res.send(validChannelMessage)
 })
 
 

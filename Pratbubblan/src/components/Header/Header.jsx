@@ -1,11 +1,13 @@
 import { useRecoilState } from 'recoil'
 import { loginUser } from '../../utils/AJAX/users/loginUser'
-import './LoginPage.css'
+import './Header.css'
 import { useRef } from 'react'
 import { loginState } from '../../recoil/atoms/loginState'
+import { loggedInUser } from '../../recoil/atoms/loggedInUser'
 
-export function LoginPage() {
+export function Header() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
+    const [userLoggedIn, setUserLoggedIn] = useRecoilState(loggedInUser)
 
     const inputUsername = useRef(null)
     const inputPassword = useRef(null)
@@ -16,15 +18,29 @@ export function LoginPage() {
         let username = inputUsername.current.value
         let password = inputPassword.current.value
 
+        if (username === "" || password === "") {
+            return
+        }
+
         // let result = await 
         // console.log(result)
+        let user = await loginUser(username, password)
+        console.log(user)
 
-        // setIsLoggedIn(await loginUser(username, password)) 
-        setIsLoggedIn(!isLoggedIn)
+        if (user === undefined) {
+            return
+        }
+
+        setIsLoggedIn(await user)
+        // setIsLoggedIn(!isLoggedIn)
+        console.log(isLoggedIn)
+        console.log(user)
+        setUserLoggedIn(user)
+        // console.log('userLoggedIn: ', userLoggedIn)
     }
 
     return (
-        <div className="LoginPage">
+        <div className="Header">
             <h1>Pratbubblan</h1>
 
             {!isLoggedIn && (
@@ -44,7 +60,12 @@ export function LoginPage() {
 
 
 
-            {isLoggedIn && <p>Inloggad!</p>}
+            {isLoggedIn && (
+                <div>
+                    <p>Inloggad som <strong>{isLoggedIn.name}</strong></p>
+                    {/* <button> Logga ut </button> */}
+                </div>
+            )}
 
 
         </div>

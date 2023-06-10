@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './index.css'
 // import { router } from './routeConfig.js'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { LoginPage } from './components/Login/LoginPage.jsx'
+import { Header } from './components/Header/Header.jsx'
 import { RecoilRoot } from 'recoil'
 import { Channel } from './routes/Channel.jsx'
 
@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
       element: <App />,
       children: [
         {
-          path: '/channels/:id',
+          path: '/:channelId',
           element: <Channel />
         }
       ]

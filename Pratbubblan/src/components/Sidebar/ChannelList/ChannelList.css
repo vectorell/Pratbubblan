@@ -1,0 +1,40 @@
+.ChannelList {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    /* border:1px dashed rgb(143, 155, 8); */
+    width: 100%;
+}
+
+.ChannelList h3 {
+    background-color: rgb(55, 73, 123);
+    width: 100%;
+    text-align: center;
+}
+
+.ChannelList p {
+    margin-top: 0.5em;
+}
+
+.ChannelList a:visited {
+    color: rgb(48, 152, 255);
+}
+
+.ChannelList a:hover {
+    color: rgb(255, 255, 255);
+}
+
+.ChannelList a {
+    text-decoration: none;
+}
+
+.ChannelList a.active {
+    font-weight: 600;
+    color: rgb(119, 187, 255);
+}
+
+.ChannelList .disabled {
+    pointer-events:none;
+    color: gray;
+    text-decoration: line-through;
+}
