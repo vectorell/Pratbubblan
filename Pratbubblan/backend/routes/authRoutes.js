@@ -403,7 +403,8 @@ router.post('/channelmessages', async (req, res) => {
         msgBody: req.body.msgBody,
         senderId: req.body.senderId,
         recieverId: req.body.recieverId,
-        msgId: randomUUID()
+        msgId: randomUUID(),
+        sentAt: new Date()
     }
 
     // Lägga in validChannelMessage till användarens messages

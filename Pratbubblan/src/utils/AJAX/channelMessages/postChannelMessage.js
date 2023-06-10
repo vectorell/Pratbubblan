@@ -4,7 +4,7 @@ export async function postChannelMessage(obj) {
         msgBody: obj.msgBody,
         senderId: obj.senderId,
         recieverId: obj.recieverId,
-        msgId: obj.msgId
+        msgId: obj.msgId,
     }
 
     try {

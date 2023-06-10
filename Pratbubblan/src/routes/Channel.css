@@ -66,3 +66,15 @@
 .channel-title {
     background-color: rgb(53, 53, 53);
 }
+
+#sent-at {
+    color:rgba(100, 100, 100, 0.563);
+    font-size: 0.8em;
+    align-self: center;
+    padding: 0.5em;
+    transition: 0.2s;
+}
+
+#sent-at:hover {
+    color:rgba(169, 169, 169, 0.563);
+}

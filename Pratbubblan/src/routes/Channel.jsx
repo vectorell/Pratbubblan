@@ -101,9 +101,12 @@ export function Channel() {
             {
                 activeChannel &&
                 activeChannel.messages.map((message, index) => (
+                    <div>
                     <div className="message" key={index}>
                         <h4> {convertSenderIdToUsername(message.senderId)}:</h4>
-                        <p>{message.msgBody}</p>
+                        <p>{message.msgBody}   </p>
+                    </div>
+                    <p id="sent-at">{message.sentAt}</p>
                     </div>
                 ))
             }
