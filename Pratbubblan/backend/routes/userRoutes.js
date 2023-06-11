@@ -8,6 +8,7 @@ import { connectDb } from '../../config/db.js'
 import bcrypt from 'bcrypt'
 import config from 'config'
 import dotenv from 'dotenv'
+import { authenticateToken } from './authRoutes.js'
 dotenv.config()
 
 const router = express.Router()

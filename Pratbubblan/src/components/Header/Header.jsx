@@ -31,12 +31,19 @@ export function Header() {
             return
         }
 
-        setIsLoggedIn(await user)
+        setIsLoggedIn(user)
         // setIsLoggedIn(!isLoggedIn)
         console.log(isLoggedIn)
         console.log(user)
         setUserLoggedIn(user)
         // console.log('userLoggedIn: ', userLoggedIn)
+
+        let d = new Date()
+        d.setTime(d.getTime() + (1*60*60*1000))
+        document.cookie = `user_cookie=${JSON.stringify(user)}; expires=${d.toUTCString()}`
+        
+        
+
     }
 
     return (

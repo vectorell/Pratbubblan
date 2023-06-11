@@ -11,6 +11,7 @@ import { loggedInUser } from "../recoil/atoms/loggedInUser"
 import { getSpecificUser } from "../utils/AJAX/users/getSpecificUser"
 import { getAllChannels } from "../utils/AJAX/channels/getAllChannels"
 // import { randomUUID } from "crypto"
+import { loginState } from "../recoil/atoms/loginState"
 
 export function Channel() {
     const {channelId} = useParams()
@@ -20,6 +21,7 @@ export function Channel() {
     const [users, setUsers] = useRecoilState(usersListState)
     const [userLoggedIn, setUserLoggedIn] = useRecoilState(loggedInUser)
     const [messages, setMessages] = useState(null)
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
 
     const messageInput = useRef(null)
 
@@ -67,12 +69,14 @@ export function Channel() {
             return
         }
 
-        let sender = await getSpecificUser(userLoggedIn.uuid)
+        //TODO
+        let sender = await getSpecificUser(isLoggedIn.uuid)
 
         let msgObject = {
             msgBody: messageInput.current.value,
             senderId: sender._id,
             recieverId: channelId,
+            token: isLoggedIn.token
         }
 
         await postChannelMessage(msgObject)
@@ -101,8 +105,8 @@ export function Channel() {
             {
                 activeChannel &&
                 activeChannel.messages.map((message, index) => (
-                    <div>
-                    <div className="message" key={index}>
+                    <div key= {index}>
+                    <div className="message">
                         <h4> {convertSenderIdToUsername(message.senderId)}:</h4>
                         <p>{message.msgBody}   </p>
                     </div>

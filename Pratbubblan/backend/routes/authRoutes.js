@@ -16,7 +16,7 @@ dotenv.config()
 const router = express.Router()
 router.use( express.json() )
 
-function authenticateToken(req, res, next) {
+export function authenticateToken(req, res, next) {
     let token = req.headers?.authorization
     console.log(token)
     const secret = secretKey
@@ -95,7 +95,7 @@ router.post('/login', async (req, res) => {
             let response = {
                 token: token,
                 uuid: maybeUser._id,
-                name: maybeUser.name
+                name: maybeUser.name,
             }
             res.send( response )
             return

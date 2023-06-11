@@ -12,7 +12,7 @@ export async function postChannelMessage(obj) {
     
         const options = {
             method: 'POST',
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json", "authorization": obj.token},
             body: JSON.stringify(msgData)
         }
     

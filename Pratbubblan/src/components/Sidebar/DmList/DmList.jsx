@@ -11,6 +11,7 @@ export function DmList() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
     const [userLoggedIn, setUserLoggedIn] = useRecoilState(loggedInUser)
 
+    // TODO
     function filterOutLoggedInUser() {
         // console.log(userLoggedIn)
         let filteredUsers = users.filter(user => user.name !== userLoggedIn.name)
