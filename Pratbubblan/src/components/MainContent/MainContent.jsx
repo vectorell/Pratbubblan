@@ -9,12 +9,15 @@ import { Channel } from '../../routes/Channel.jsx'
 import { useState } from 'react'
 import { loginState } from '../../recoil/atoms/loginState.js'
 import { Sidebar } from '../Sidebar/Sidebar.jsx'
-import { MessageField } from '../MessageField/MessageField.jsx'
 import { getAllUsers } from '../../utils/AJAX/users/getAllUsers.js'
 import { usersListState } from '../../recoil/atoms/usersState.js'
+import { privateChannelsState } from '../../recoil/atoms/privateChannelsState.js'
+import { getPrivateChannels } from '../../utils/AJAX/privateChannels/getPrivateChannels.js'
 
 export function MainContent() {
     const [channels, setChannels] = useRecoilState(channelsState)
+    const [privateChannels, setPrivateChannels] = useRecoilState(privateChannelsState)
+
     const [activeChannel, setActiveChannel] = useRecoilState(chosenChannel)
     const [channel, setChannel] = useState(null)
 
@@ -30,6 +33,16 @@ export function MainContent() {
             setChannels(fetchedChannels)
             console.log(channels)
         } catch (error) {
+        }
+    }
+
+    async function fetchPrivateChannels() {
+        try {
+            let fetchedPrivateChannels = await getPrivateChannels()
+            setChannels(fetchedPrivateChannels)
+            // console.log(channels)
+        } catch (error) {
+            
         }
     }
 
@@ -53,7 +66,9 @@ export function MainContent() {
     return (
         <div className="MainContent">
             <Sidebar />
-            <MessageField />
+            {/* <MessageField /> */}
+            {/* <Channel /> */}
+            <Outlet />
         </div>
     )
 }

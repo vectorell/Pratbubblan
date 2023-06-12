@@ -1,4 +1,5 @@
 
+// Ny användare
 export function validateUserBody(maybeUser) {
 
     if (!maybeUser) {
@@ -47,6 +48,62 @@ export function validateUserBody(maybeUser) {
     }
 
     return true
+}
+
+// Ändra på användare
+export function validateUserBodyPUT(maybeUser) {
+
+    if (!maybeUser) {
+        console.log(`POST /api/users ${!maybeUser}`)
+        return false
+    }
+    
+    
+    if (typeof maybeUser !== 'object') {
+        console.log(`POST /api/users ${!maybeUser}`)
+        return false
+    }
+    
+    if (typeof (maybeUser.name) !== "string") {
+        console.log('Inuti validateUserBodyPUT: name !== "string"')
+        return false
+    }
+    
+    if (maybeUser.name === '') {
+        console.log('Inuti validateUserBodyPUT: name === ""')
+        return false
+    }
+    
+    
+    if (typeof (maybeUser.mail) !== "string") {
+        console.log('Inuti validateUserBodyPUT: mail !== "string"')
+        return false
+    } 
+    
+    if (maybeUser.mail === '') {
+        console.log('Inuti validateUserBodyPUT: mail === ""')
+        return false
+    }
+    
+    // if (typeof (maybeUser.uuid) !== "string") {
+        //     return false
+        // } 
+        
+        // if (maybeUser.uuid === '') {
+            //     return false
+            // }
+            
+            // Om maybeUser innehåller några andra keys än 'name', 'password' eller 'mail'
+            const maybeUserKeys = Object.keys(maybeUser)
+            // console.log(maybeUserKeys)
+            const extraFields = maybeUserKeys.filter(key => (key !== 'name') && (key !== 'mail'))
+            
+            if (extraFields.length > 0) {
+                console.log('Inuti validateUserBodyPUT: extraFields.ength > 0')
+                return false
+            }
+            
+            return true
 }
 
 
@@ -181,6 +238,16 @@ export function validateChannelMsg(maybeChannelMessage) {
         return false
     }
 
+    if (typeof (maybeChannelMessage.senderName) !== "string") {
+        console.log('senderId !== "string"')
+        return false
+    } 
+    
+    if (maybeChannelMessage.senderName === '') {
+        console.log("senderId === ''")
+        return false
+    }
+
     if (typeof (maybeChannelMessage.recieverId) !== "string") {
         console.log('recieverId !== "string"')
         return false
@@ -194,7 +261,7 @@ export function validateChannelMsg(maybeChannelMessage) {
     // Om maybeChannelMessage innehåller några andra keys än spec
     const maybeChannelMessageKeys = Object.keys(maybeChannelMessage)
     // console.log(maybeChannelMessageKeys)
-    const extraFields = maybeChannelMessageKeys.filter(key => (key !== 'senderId') && (key !== 'recieverId') && (key !== 'msgBody') && (key !== 'sentAt'))
+    const extraFields = maybeChannelMessageKeys.filter(key => (key !== 'senderId') && (key !== 'senderName') && (key !== 'recieverId') && (key !== 'msgBody') && (key !== 'sentAt'))
     
     if (extraFields.length > 0) {
         return false

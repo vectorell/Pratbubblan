@@ -4,6 +4,7 @@ import './Header.css'
 import { useRef } from 'react'
 import { loginState } from '../../recoil/atoms/loginState'
 import { loggedInUser } from '../../recoil/atoms/loggedInUser'
+import { NavLink } from 'react-router-dom'
 
 export function Header() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
@@ -70,7 +71,10 @@ export function Header() {
             {isLoggedIn && (
                 <div>
                     <p>Inloggad som <strong>{isLoggedIn.name}</strong></p>
-                    <button> Redigera konto </button>
+                    <button>  
+                        <NavLink to={`/account/${isLoggedIn.uuid}`}> Redigera konto </NavLink>
+                        </button>
+                    
                     <button> Logga ut </button>
                 </div>
             )}

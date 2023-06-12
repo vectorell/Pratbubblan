@@ -1,13 +1,12 @@
 import './App.css'
-import { NavLink, Outlet } from 'react-router-dom'
 import { Header } from './components/Header/Header'
 import { MainContent } from './components/MainContent/MainContent'
-import { getAllChannels } from './utils/AJAX/channels/getAllChannels'
-import { channelsState } from './recoil/atoms/channelsState'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import { loggedInUser } from './recoil/atoms/loggedInUser'
 import { loginState } from './recoil/atoms/loginState'
+import { Sidebar } from './components/Sidebar/Sidebar'
+import { Outlet } from 'react-router'
 
 function App() {
   // const [channels, setChannels] = useRecoilState(channelsState)
@@ -20,13 +19,8 @@ function App() {
     if(rawCookie) {
       let cookie = JSON.parse(rawCookie.split('=')[1])
       setIsLoggedIn(cookie)
-
-
-      // setUserLoggedIn(true)
     }
     return
-
-
   }
 
   useEffect(() => {
@@ -35,12 +29,15 @@ function App() {
 
   // setChannels(getAllChannels())
 
+  
+
   return (
     <div className="App">
       <div>
         <Header/>
       </div>
       <MainContent/>
+      {/* <Sidebar /> */}
     
     </div>
   )

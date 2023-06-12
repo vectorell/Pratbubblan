@@ -3,6 +3,7 @@ export async function postChannelMessage(obj) {
     let msgData = {
         msgBody: obj.msgBody,
         senderId: obj.senderId,
+        senderName: obj.senderName,
         recieverId: obj.recieverId,
         msgId: obj.msgId,
     }

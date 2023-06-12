@@ -1,0 +1,42 @@
+.PrivateChannelList {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    /* border:1px dashed rgb(143, 155, 8); */
+    width: 100%;
+}
+
+.PrivateChannelList h3 {
+    background-color: rgb(55, 73, 123);
+    width: 100%;
+    text-align: center;
+}
+
+.PrivateChannelList p {
+    margin-top: 0.5em;
+}
+
+.PrivateChannelList a:visited {
+    color: rgb(48, 152, 255);
+}
+
+.PrivateChannelList a:hover {
+    transition: 0.2s;
+    color: rgb(255, 255, 255);
+}
+
+.PrivateChannelList a {
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.PrivateChannelList a.active {
+    font-weight: 600;
+    color: rgb(119, 187, 255);
+}
+
+.PrivateChannelList .disabled {
+    pointer-events:none;
+    color: gray;
+    text-decoration: line-through;
+}

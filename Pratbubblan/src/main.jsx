@@ -7,7 +7,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Header } from './components/Header/Header.jsx'
 import { RecoilRoot } from 'recoil'
 import { Channel } from './routes/Channel.jsx'
-
+import { EditAccount } from './routes/editAccount/EditAccount.jsx'
+import { loginState } from './recoil/atoms/loginState.js'
+import { useRecoilState } from 'recoil'
 
 export const router = createBrowserRouter([
     {
@@ -17,6 +19,10 @@ export const router = createBrowserRouter([
         {
           path: '/:channelId',
           element: <Channel />
+        },
+        {
+          path: '/account/:uuid',
+          element: <EditAccount />
         }
       ]
     }

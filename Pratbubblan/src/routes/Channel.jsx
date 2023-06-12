@@ -36,14 +36,14 @@ export function Channel() {
         findChannel(channelId)
     }, [channelId])
 
-    function convertSenderIdToUsername(senderId) {
-        if(!senderId) {
-            return
-        }
+    // function convertSenderIdToUsername(senderId) {
+    //     if(!senderId) {
+    //         return
+    //     }
 
-        let foundUser = users.find(user => user._id === senderId)
-        return foundUser.name
-    }
+    //     let foundUser = users.find(user => user._id === senderId)
+    //     return foundUser.name
+    // }
 
     function convertRecieverIdToUsername(recieverId) {
         if(!recieverId) {
@@ -75,6 +75,7 @@ export function Channel() {
         let msgObject = {
             msgBody: messageInput.current.value,
             senderId: sender._id,
+            senderName: isLoggedIn.name,
             recieverId: channelId,
             token: isLoggedIn.token
         }
@@ -107,7 +108,8 @@ export function Channel() {
                 activeChannel.messages.map((message, index) => (
                     <div key= {index}>
                     <div className="message">
-                        <h4> {convertSenderIdToUsername(message.senderId)}:</h4>
+                        {/* <h4> {convertSenderIdToUsername(message.senderId)}:</h4> */}
+                        <h4> {message.senderName}:</h4>
                         <p>{message.msgBody}   </p>
                     </div>
                     <p id="sent-at">{message.sentAt}</p>
@@ -115,7 +117,7 @@ export function Channel() {
                 ))
             }
 
-            {userLoggedIn &&
+            {isLoggedIn &&
             <form>
                 <input type="text" ref={messageInput}/>
                 <button onClick={handleSend}> Skicka </button>

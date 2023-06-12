@@ -1,0 +1,37 @@
+.EditAccount {
+    /* border: 1px dotted green; */
+    width: 100%;
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.EditAccount div {
+    width: 100%;
+    margin-left: auto;
+}
+
+.EditAccount form {
+    /* border: 1px dotted green; */
+    box-shadow: 1px 4px 12px black;;
+    margin-top: 1em;
+    padding: 1.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20em;
+    row-gap: 1em;
+}
+
+.EditAccount input {
+    width: 100%;
+}
+
+.EditAccount button {
+    padding: 0.5em 1em;
+    width: fit-content;
+    font-weight: 600;
+    margin: 0.5em;
+}

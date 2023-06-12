@@ -1,6 +1,6 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import { validateChannel, validateDmMsg, validateUserBody, validateChannelMsg } from '../utils/validation.js'
+import { validateChannel, validateDmMsg, validateUserBody, validateChannelMsg, validateUserBodyPUT } from '../utils/validation.js'
 import { connectDb } from '../../config/db.js'
 import { generateToken, secretKey } from '../utils/.secret.js'
 import bcryptjs from 'bcryptjs'
@@ -10,6 +10,7 @@ import Conversation from '../../models/Conversation.js'
 import dotenv from 'dotenv'
 import Channel from '../../models/Channels.js'
 import { randomUUID } from 'crypto'
+import PrivateChannel from '../../models/ChannelsPrivate.js'
 dotenv.config()
 
 
@@ -111,8 +112,8 @@ router.put('/:uuid', authenticateToken, async (req,res) => {
     console.log(maybeUser)
 
     // VALIDERING
-    let approved = validateUserBody(maybeUser)
-    console.log(approved)
+    let approved = validateUserBodyPUT(maybeUser)
+    console.log('approved: ', approved)
     
     if (approved) {
         await connectDb()
@@ -174,8 +175,9 @@ router.post('/', authenticateToken, async (req, res) => {
 })
 
 // [USERS - DELETE] - Radera specifik användare
-router.delete('/:uuid', authenticateToken, async (req,res) => {
+router.delete('/delete-user/:uuid', authenticateToken, async (req,res) => {
     const uuid = req.params.uuid
+    console.log('HÄR: ', uuid)
 
     try {
         await connectDb()
@@ -402,9 +404,11 @@ router.post('/channelmessages', async (req, res) => {
     validChannelMessage = {
         msgBody: req.body.msgBody,
         senderId: req.body.senderId,
+        senderName: req.body.senderName,
         recieverId: req.body.recieverId,
         msgId: randomUUID(),
-        sentAt: new Date()
+        sentAt: new Date(),
+
     }
 
     // Lägga in validChannelMessage till användarens messages
@@ -422,10 +426,79 @@ router.post('/channelmessages', async (req, res) => {
     res.send(validChannelMessage)
 })
 
+// Hämta alla privata kanaler
+router.get('/channels/private', authenticateToken, async (req, res) => {
+    try {
+        const privateChannels = await PrivateChannel.find()
+        res.send(privateChannels)
+        return
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(400)
+    }
+})
 
 
+// try {
+//     // Kolla om kanal redan finns (genom mailadress)
+//     await connectDb()
+//     const filteredChannels = await Channel.find({ channelName: req.body.channelName})
+//     if (filteredChannels.length > 0) {
+//         res.sendStatus(400)
+//         return
+//     }
 
+//     // Skapa en ny instans av en kanal
+//     maybeChannel = new Channel({
+//         channelName: req.body.channelName,
+//         isLocked: req.body.isLocked
+//     })
 
+//     // Spara kanalen till databasen
+//     await maybeChannel.save()
+
+//     return res.sendStatus(200)
+// } catch (error) {
+//     res.sendStatus(400)
+//     return
+// }
+// })
+// Lägg till privat kanal
+router.post('/channels/private', async (req, res) => {
+    let maybeChannel = req.body
+    
+    // VALIDERING
+    let approved = validateChannel(maybeChannel)
+    if (!approved) {
+        res.sendStatus(400)
+        return
+    }
+    
+    // Försök skapa en ny instans av en kanal
+    try {
+        // Kolla om kanal redan finns (genom mailadress)
+        await connectDb()
+        // const filteredChannels = await PrivateChannel.find({ channelName: req.body.channelName})
+        // if (filteredChannels.length > 0) {
+        //     res.sendStatus(400)
+        //     return
+        // }
+
+        // Skapa en ny instans av en kanal
+        maybeChannel = new PrivateChannel({
+            channelName: req.body.channelName,
+            isLocked: req.body.isLocked
+        })
+
+        // Spara kanalen till databasen
+        await maybeChannel.save()
+
+        return res.sendStatus(200)
+    } catch (error) {
+        res.sendStatus(400)
+        return
+    }
+})
 
 router.get('/control', authenticateToken, (req,res) => {
     res.send('GET /api/users<br/> <h1>  AUTH success! </h1>')
