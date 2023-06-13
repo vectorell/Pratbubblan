@@ -8,7 +8,7 @@ import { NavLink, Outlet } from "react-router-dom"
 import { ChannelList } from "./ChannelList/ChannelList"
 import './Sidebar.css'
 import { DmList } from "./DmList/DmList"
-import { PrivateChannelList } from "./PrivateChannelList/PrivateChannelList"
+import { PrivateChannelList } from "./PrivateChannelList/PrivateChannelList.jsx"
 
 export function Sidebar() {
     const [channels, setChannels] = useRecoilState(channelsState)

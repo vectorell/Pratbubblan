@@ -29,6 +29,8 @@ app.use(morgan('common'))
 // - Hämta användardetaljer */
 app.use('/api/users', userRoute)
 
+app.use('/api/channels', canalRoute)
+
 // ROUTE - Auth (behöver auth)
 /** - Auth Middleware
  *  - ***** ANVÄNDARDEL *****

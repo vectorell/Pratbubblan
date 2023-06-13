@@ -1,5 +1,7 @@
 export async function postChannelMessage(obj) {
 
+    console.log('ob: ', obj)
+
     let msgData = {
         msgBody: obj.msgBody,
         senderId: obj.senderId,
@@ -9,7 +11,7 @@ export async function postChannelMessage(obj) {
     }
 
     try {
-        const baseUrl = 'http://localhost:1341/api/auth/channelmessages'
+        const baseUrl = 'http://localhost:1341/api/channels/channelmessages/private'
     
         const options = {
             method: 'POST',
@@ -19,12 +21,12 @@ export async function postChannelMessage(obj) {
     
         const response = await fetch(baseUrl, options)
         let parsedData = await response.json()
-        console.log(parsedData)
+        console.log('parsedData: ', parsedData)
 
         return
         
     } catch (error) {
-        console.log(error)
+        console.log('error', error)
         return
     }
 }

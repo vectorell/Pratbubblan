@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
 const MessageSchema = new mongoose.Schema({
-    msgId: String,
+    // msgId: String,
     senderId: String,
+    senderName: String,
     recieverId: String,
+    recieverName: String,
     msgBody: String,
     sentAt: { type: Date, default: Date.now() }
 })

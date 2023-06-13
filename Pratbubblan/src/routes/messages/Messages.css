@@ -1,4 +1,4 @@
-.Channel {
+.Messages {
     width: 100%;
     height: 100%;
     display: flex;
@@ -6,37 +6,37 @@
     position: relative;
 }
 
-.Channel div {
+.Messages div {
     width: 100%;
     /* height: 100%; */
     display: flex;
     /* align-items: center; */
 }
 
-.Channel div:nth-child(1) {
+.Messages div:nth-child(1) {
     display: flex;
     align-items: center;
 }
 
-.Channel h1 {
+.Messages h1 {
     margin-left: 0.4em;
     /* background-color: */
     color: rgb(124, 144, 255);
 }
 
-.Channel h2 {
+.Messages h2 {
     margin-left: 0.4em;
     margin-top: 0.2em;
     /* align-self: center; */
 }
 
 
-.Channel h4{
+.Messages h4{
     /* margin-left: 0.4em; */
     font-weight: 500;
 }
 
-.Channel p {
+.Messages p {
     margin-left: 0.7em;
     color: rgb(0, 255, 0);
 }
@@ -51,29 +51,21 @@
     margin-left: 1em;
 }
 
-.Channel form {
+.Messages form {
     display: flex;
     position: fixed;
     bottom: 1em;
     width: 100%;
 }
 
-.Channel input {
+.Messages input {
     padding: 0.5em 1em;
     width: 40%;
     margin-left: 1em;
     margin-right: 1em;
 }
 
-.Channel .please-login-msg {
-    position: fixed;
-    bottom: 1em;
-    margin-left: 1em;
-    color:rgb(133, 133, 133);
-    font-weight: 300;
-}
-
-.channel-title {
+.messages-title {
     background-color: rgb(53, 53, 53);
 }
 

@@ -5,13 +5,31 @@ import { useRef } from 'react'
 import { loginState } from '../../recoil/atoms/loginState'
 import { loggedInUser } from '../../recoil/atoms/loggedInUser'
 import { NavLink } from 'react-router-dom'
+import { getAllChannels } from '../../utils/AJAX/channels/getAllChannels'
+import { getPrivateChannels } from '../../utils/AJAX/privateChannels/getPrivateChannels'
+import { privateChannelsState } from '../../recoil/atoms/privateChannelsState'
 
 export function Header() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
     const [userLoggedIn, setUserLoggedIn] = useRecoilState(loggedInUser)
+    const [privateChannels, setPrivateChannels] = useRecoilState(privateChannelsState)
 
     const inputUsername = useRef(null)
     const inputPassword = useRef(null)
+
+    async function fetchPrivateChannels(token) {
+        // let testCookie = document.cookie.split('=')[1]
+        // if (testCookie === '' || testCookie === undefined || testCookie === null) {
+        //     return
+        // }
+        try {
+            let fetchedPrivateChannels = await getPrivateChannels(token)
+            setPrivateChannels(fetchedPrivateChannels)
+            // console.log(channels)
+        } catch (error) {
+            
+        }
+    }
 
     async function handleClick(e) {
         e.preventDefault()
@@ -39,12 +57,19 @@ export function Header() {
         setUserLoggedIn(user)
         // console.log('userLoggedIn: ', userLoggedIn)
 
+        await fetchPrivateChannels(user.token)
+
         let d = new Date()
         d.setTime(d.getTime() + (1*60*60*1000))
         document.cookie = `user_cookie=${JSON.stringify(user)}; expires=${d.toUTCString()}`
-        
-        
+    }
 
+    function handleLogout() {
+        // document.cookie = "user_cookie; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+        let d = new Date()
+        d.toUTCString
+        console.log(d)
+        document.cookie=`user_cookie=; `
     }
 
     return (
@@ -69,13 +94,18 @@ export function Header() {
 
 
             {isLoggedIn && (
-                <div>
+                <div className='dashboard'>
                     <p>Inloggad som <strong>{isLoggedIn.name}</strong></p>
+                    <div>
                     <button>  
-                        <NavLink to={`/account/${isLoggedIn.uuid}`}> Redigera konto </NavLink>
-                        </button>
+                        <NavLink className="header-buttons" to={`/account/new`}> Lägg till nytt konto </NavLink>
+                    </button>
+                    <button>  
+                        <NavLink className="header-buttons" to={`/account/${isLoggedIn.uuid}`}> Redigera konto </NavLink>
+                    </button>
+                    <button className="header-buttons" onClick={handleLogout}> Logga ut </button>
+                    </div>
                     
-                    <button> Logga ut </button>
                 </div>
             )}
 

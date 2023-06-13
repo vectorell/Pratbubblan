@@ -5,8 +5,9 @@ const ConversationSchema = new mongoose.Schema({
     participantsId: [],
     creationDate: {type: Date, default: Date.now},
     lastActiveAt: {type: Date, default: Date.now},
-    messageIds: [],
-    isLocked: Boolean
+    messages: [],
+    isLocked: Boolean,
+    conversationId: String,
 })
 
 const Conversation = mongoose.model('Conversation', ConversationSchema)

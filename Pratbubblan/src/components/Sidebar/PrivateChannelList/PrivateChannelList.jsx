@@ -10,19 +10,23 @@ export function PrivateChannelList() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
     const [activeChannel, setActiveChannel] = useRecoilState(chosenChannel)
 
+    function handleClick(privateChannel) {
+        // console.log(privateChannel)
+        setActiveChannel(privateChannel)
+    }
     return (
         <div className="PrivateChannelList">
             <h3> Privata kanaler </h3>
-            {privateChannels ? privateChannels.map((privateChannel, index) => (
+            {privateChannels.length > 0 ? privateChannels.map((privateChannel, index) => (
                     <NavLink 
-                        to={`/${privateChannel._id}`} 
+                        to={`/private/${privateChannel._id}`} 
                         key={index}
-                        onClick={() => handleClick(privateChannel._id)}
+                        onClick={() => handleClick(privateChannel)}
                         >
                         <p>{privateChannel.channelName}</p>
                     </NavLink>
 
-                )):null}
+                )): <p> Var god logga in för denna vy</p>}
         </div>
     )
 }

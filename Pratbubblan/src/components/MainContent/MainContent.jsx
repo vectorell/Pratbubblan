@@ -36,16 +36,28 @@ export function MainContent() {
         }
     }
 
-    async function fetchPrivateChannels() {
+
+    async function fetchPrivateChannels(token) {
+        console.log('fetchPrivateChannels: token: ', await token);
+        // let testCookie = document.cookie.split('=')[1]
+        // if (testCookie === '' || testCookie === undefined || testCookie === null) {
+        //     return
+        // }
         try {
-            let fetchedPrivateChannels = await getPrivateChannels()
-            setChannels(fetchedPrivateChannels)
+            let fetchedPrivateChannels = await getPrivateChannels(isLoggedIn.token)
+            setPrivateChannels(await fetchedPrivateChannels)
             // console.log(channels)
         } catch (error) {
             
         }
     }
 
+    useEffect(() => {
+        if (isLoggedIn.token) {
+          fetchPrivateChannels(isLoggedIn.token);
+        }
+      }, [isLoggedIn.token]);
+    
     useEffect(() => {
         fetchChannels()
       }, [])

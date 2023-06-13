@@ -10,6 +10,9 @@ import { Channel } from './routes/Channel.jsx'
 import { EditAccount } from './routes/editAccount/EditAccount.jsx'
 import { loginState } from './recoil/atoms/loginState.js'
 import { useRecoilState } from 'recoil'
+import { Messages } from './routes/messages/Messages.jsx'
+import { PrivateChannel } from './components/PrivateChannel/PrivateChannel.jsx'
+import { AddAccount } from './components/Header/AddAccount/AddAccount.jsx'
 
 export const router = createBrowserRouter([
     {
@@ -21,8 +24,20 @@ export const router = createBrowserRouter([
           element: <Channel />
         },
         {
+          path: 'private/:channelId',
+          element: <PrivateChannel />
+        },
+        {
           path: '/account/:uuid',
           element: <EditAccount />
+        },
+        {
+          path: '/messages/:conversationId',
+          element: <Messages />
+        },
+        {
+          path: '/account/new',
+          element: <AddAccount />
         }
       ]
     }

@@ -1,24 +1,22 @@
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router"
-import { getSpecificChannel } from "../utils/AJAX/channels/getSpecificChannel"
-import { chosenChannel } from "../recoil/atoms/chosenChannel"
+import { getSpecificChannel } from "../../utils/AJAX/channels/getSpecificChannel"
+import { chosenChannel } from "../../recoil/atoms/chosenChannel"
 import { useRecoilState } from "recoil"
-import { channelsState } from "../recoil/atoms/channelsState"
-import { usersListState } from "../recoil/atoms/usersState"
-import './Channel.css'
-import { postChannelMessage } from "../utils/AJAX/channelMessages/postChannelMessage"
-import { loggedInUser } from "../recoil/atoms/loggedInUser"
-import { getSpecificUser } from "../utils/AJAX/users/getSpecificUser"
-import { getAllChannels } from "../utils/AJAX/channels/getAllChannels"
-// import { randomUUID } from "crypto"
-import { loginState } from "../recoil/atoms/loginState"
-import { privateChannelsState } from "../recoil/atoms/privateChannelsState"
+// import { channelsState } from "../../recoil/atoms/channelsState"
+import { privateChannelsState } from "../../recoil/atoms/privateChannelsState"
+import { usersListState } from "../../recoil/atoms/usersState"
+import './PrivateChannel.css'
+import { postChannelMessage } from "../../utils/AJAX/channelMessages/postChannelMessage"
+import { loggedInUser } from "../../recoil/atoms/loggedInUser"
+import { getSpecificUser } from "../../utils/AJAX/users/getSpecificUser"
+import { getAllChannels } from "../../utils/AJAX/channels/getAllChannels"
+import { loginState } from "../../recoil/atoms/loginState"
+import { getPrivateChannels } from "../../utils/AJAX/privateChannels/getPrivateChannels"
 
-export function Channel() {
+export function PrivateChannel() {
     const {channelId} = useParams()
-    const [channels, setChannels] = useRecoilState(channelsState)
     const [privateChannels, setPrivateChannels] = useRecoilState(privateChannelsState)
-
     const [activeChannel, setActiveChannel] = useRecoilState(chosenChannel)
     // const [channel, setChannel] = useState(null)
     const [users, setUsers] = useRecoilState(usersListState)
@@ -29,33 +27,24 @@ export function Channel() {
     const messageInput = useRef(null)
 
 
-    function findChannel(id) {
-        let foundChannel = channels.find(channel => channel._id === id)
-        console.log('foundChannel: ',foundChannel);
-        
-        if (foundChannel === undefined) {
-            let foundPrivateChannel = privateChannels.find(channel => channel._id === id)
-            setActiveChannel(foundPrivateChannel)
-            return
-        }
+    // function findChannel(id) {
+    //     let foundChannel = channels.find(channel => channel._id === id)
+    //     setActiveChannel(foundChannel)
+    //     return foundChannel
+    // }
 
+    // useEffect(() => {
+    //     findChannel(channelId)
+    // }, [channelId])
 
-        setActiveChannel(foundChannel)
-        return foundChannel
-    }
+    // function convertSenderIdToUsername(senderId) {
+    //     if(!senderId) {
+    //         return
+    //     }
 
-    useEffect(() => {
-        findChannel(channelId)
-    }, [channelId])
-
-    function convertSenderIdToUsername(senderId) {
-        if(!senderId) {
-            return
-        }
-
-        let foundUser = users.find(user => user._id === senderId)
-        return foundUser.name
-    }
+    //     let foundUser = users.find(user => user._id === senderId)
+    //     return foundUser.name
+    // }
 
     function convertRecieverIdToUsername(recieverId) {
         if(!recieverId) {
@@ -95,8 +84,8 @@ export function Channel() {
         await postChannelMessage(msgObject)
         messageInput.current.value = ''
 
-        let fetchedChannels = await getAllChannels()
-        setChannels(await fetchedChannels)
+        let fetchedChannels = await getPrivateChannels()
+        setPrivateChannels(await fetchedChannels)
 
         setActiveChannel((prevChannel) => {
             const updatedMessages = [...prevChannel.messages, msgObject];
@@ -109,8 +98,8 @@ export function Channel() {
     
 
     return (
-        <div className="Channel">
-            <div className="channel-title">
+        <div className="PrivateChannel">
+            <div className="PrivateChannel-title">
                 <h2> Kanal: </h2>  
                 <h1>{activeChannel && activeChannel.channelName} </h1>
             </div>
@@ -120,6 +109,7 @@ export function Channel() {
                 activeChannel.messages.map((message, index) => (
                     <div key= {index}>
                     <div className="message">
+                        {/* <h4> {convertSenderIdToUsername(message.senderId)}:</h4> */}
                         <h4> {message.senderName}:</h4>
                         <p>{message.msgBody}   </p>
                     </div>
@@ -133,10 +123,7 @@ export function Channel() {
                 <input type="text" ref={messageInput}/>
                 <button onClick={handleSend}> Skicka </button>
             </form>
-            }
-            {!isLoggedIn &&
-                <h3 className='please-login-msg'>Var god logga in för att skriva till kanalen...</h3>
-            }
+        }
         </div>
     )
 }

@@ -11,6 +11,7 @@ import dotenv from 'dotenv'
 import Channel from '../../models/Channels.js'
 import { randomUUID } from 'crypto'
 import PrivateChannel from '../../models/ChannelsPrivate.js'
+import Message from '../../models/Messages.js'
 dotenv.config()
 
 
@@ -59,6 +60,8 @@ export function authenticateToken(req, res, next) {
  */ 
 
 
+
+/**   USERS NEDAN **********************************************************/
 // [USERS - POST] - Logga in
 router.post('/login', async (req, res) => {
     const name = req.body?.name
@@ -133,7 +136,7 @@ router.put('/:uuid', authenticateToken, async (req,res) => {
 })
 
 // [USERS - POST] - Lägg till användare
-router.post('/', authenticateToken, async (req, res) => {
+router.post('/user', authenticateToken, async (req, res) => {
     let maybeUser = req.body
     
     // VALIDERING
@@ -191,6 +194,8 @@ router.delete('/delete-user/:uuid', authenticateToken, async (req,res) => {
     }
 })
 
+/**    NEDAN **********************************************************/
+
 
 // [GET - Skapa eller hämta konversation (DM)]
 router.get('/conversation/:firstid/:secondid', async (req, res) => {
@@ -242,10 +247,10 @@ router.get('/conversation/:firstid/:secondid', async (req, res) => {
         })
 
         await connectDb()
-        let conversationExisting = checkForExistingConversation === undefined 
-        console.log('Conversation exists? ', conversationExisting)
+        // let conversationExisting = checkForExistingConversation === undefined 
+        console.log('Conversation exists? ', checkForExistingConversation)
 
-        if (conversationExisting) {
+        if (checkForExistingConversation) {
             return res.status(302).send(checkForExistingConversation)
             // 302 Found
         }
@@ -350,21 +355,28 @@ router.post('/channels', async (req, res) => {
     }
 })
 
+// Skicka direktmeddelande
 router.post('/messages', async (req, res) => {
     let maybeMsg = req.body
 
     let validMessage = validateDmMsg(maybeMsg)
 
     if (!validMessage) {
+        console.log('!validMessage')
         return res.sendStatus(400)
     }
 
     validMessage = {
         msgBody: req.body.msgBody,
         senderId: req.body.senderId,
+        senderName: req.body.senderName,
         recieverId: req.body.recieverId,
-        msgId: randomUUID()
+        recieverName: req.body.recieverName,
+        msgId: randomUUID(),
+        conversationId: req.body.conversationId,
     }
+
+    console.log('SERVERSIDE, validMessage: ', validMessage)
 
     // Lägga in validMessage till sändare och mottagares messages
     // let foundSender = await User.findOne({ _id: validMessage.senderId })
@@ -379,8 +391,8 @@ router.post('/messages', async (req, res) => {
         // console.log(User.findOne({ _id: validMessage.senderId}))
     
     // Lägga in validMessage till belongsTo
-    await Channel.updateOne(
-        { _id: validMessage.belongsTo}, 
+    await Conversation.updateOne(
+        { _id: validMessage.conversationId}, 
         {$push: { messages: {$each: [validMessage]} }})
 
     // 
@@ -391,52 +403,9 @@ router.post('/messages', async (req, res) => {
 })
 
 
-// POST - nytt kanalmeddelande
-router.post('/channelmessages', async (req, res) => {
-    let maybeChannelMsg = req.body
-
-    let validChannelMessage = validateChannelMsg(maybeChannelMsg)
-
-    if (!validChannelMessage) {
-        return res.sendStatus(400)
-    }
-
-    validChannelMessage = {
-        msgBody: req.body.msgBody,
-        senderId: req.body.senderId,
-        senderName: req.body.senderName,
-        recieverId: req.body.recieverId,
-        msgId: randomUUID(),
-        sentAt: new Date(),
-
-    }
-
-    // Lägga in validChannelMessage till användarens messages
-    await User.updateOne(
-        { _id: validChannelMessage.senderId}, 
-        {$push: { messages: {$each: [validChannelMessage]} }})
-
-    // Lägga in validChannelMessage till kanalens messages
-    await Channel.updateOne(
-        { _id: validChannelMessage.recieverId}, 
-        {$push: { messages: {$each: [validChannelMessage]} }})
 
 
-    console.log(validChannelMessage)
-    res.send(validChannelMessage)
-})
 
-// Hämta alla privata kanaler
-router.get('/channels/private', authenticateToken, async (req, res) => {
-    try {
-        const privateChannels = await PrivateChannel.find()
-        res.send(privateChannels)
-        return
-    } catch (error) {
-        console.log(error)
-        return res.sendStatus(400)
-    }
-})
 
 
 // try {
@@ -464,41 +433,41 @@ router.get('/channels/private', authenticateToken, async (req, res) => {
 // }
 // })
 // Lägg till privat kanal
-router.post('/channels/private', async (req, res) => {
-    let maybeChannel = req.body
+// router.post('/channels/private', async (req, res) => {
+//     let maybeChannel = req.body
     
-    // VALIDERING
-    let approved = validateChannel(maybeChannel)
-    if (!approved) {
-        res.sendStatus(400)
-        return
-    }
+//     // VALIDERING
+//     let approved = validateChannel(maybeChannel)
+//     if (!approved) {
+//         res.sendStatus(400)
+//         return
+//     }
     
-    // Försök skapa en ny instans av en kanal
-    try {
-        // Kolla om kanal redan finns (genom mailadress)
-        await connectDb()
-        // const filteredChannels = await PrivateChannel.find({ channelName: req.body.channelName})
-        // if (filteredChannels.length > 0) {
-        //     res.sendStatus(400)
-        //     return
-        // }
+//     // Försök skapa en ny instans av en kanal
+//     try {
+//         // Kolla om kanal redan finns (genom mailadress)
+//         await connectDb()
+//         // const filteredChannels = await PrivateChannel.find({ channelName: req.body.channelName})
+//         // if (filteredChannels.length > 0) {
+//         //     res.sendStatus(400)
+//         //     return
+//         // }
 
-        // Skapa en ny instans av en kanal
-        maybeChannel = new PrivateChannel({
-            channelName: req.body.channelName,
-            isLocked: req.body.isLocked
-        })
+//         // Skapa en ny instans av en kanal
+//         maybeChannel = new PrivateChannel({
+//             channelName: req.body.channelName,
+//             isLocked: req.body.isLocked
+//         })
 
-        // Spara kanalen till databasen
-        await maybeChannel.save()
+//         // Spara kanalen till databasen
+//         await maybeChannel.save()
 
-        return res.sendStatus(200)
-    } catch (error) {
-        res.sendStatus(400)
-        return
-    }
-})
+//         return res.sendStatus(200)
+//     } catch (error) {
+//         res.sendStatus(400)
+//         return
+//     }
+// })
 
 router.get('/control', authenticateToken, (req,res) => {
     res.send('GET /api/users<br/> <h1>  AUTH success! </h1>')

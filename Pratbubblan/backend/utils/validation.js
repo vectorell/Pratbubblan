@@ -37,11 +37,19 @@ export function validateUserBody(maybeUser) {
     if (maybeUser.password === '') {
         return false
     }
+
+    if (typeof (maybeUser.token) !== "string") {
+        return false
+    } 
+    
+    if (maybeUser.token === '') {
+        return false
+    }
     
     // Om maybeUser innehåller några andra keys än 'name', 'password' eller 'mail'
     const maybeUserKeys = Object.keys(maybeUser)
     // console.log(maybeUserKeys)
-    const extraFields = maybeUserKeys.filter(key => (key !== 'name') && (key !== 'mail') && (key !== 'password'))
+    const extraFields = maybeUserKeys.filter(key => (key !== 'name') && (key !== 'mail') && (key !== 'password') && (key !== 'token'))
     
     if (extraFields.length > 0) {
         return false
@@ -120,15 +128,18 @@ export function validateChannel(maybeChannel) {
     }
     
     if (typeof (maybeChannel.channelName) !== "string") {
+        console.log('1')
         return false
     }
     
     if (maybeChannel.channelName === '') {
+        console.log('2')
         return false
     }
     
     
     if (maybeChannel.isLocked === undefined || maybeChannel.isLocked === null ) {
+        console.log('3')
         return false
     } 
     
@@ -138,6 +149,7 @@ export function validateChannel(maybeChannel) {
     const extraFields = maybeChannelKeys.filter(key => (key !== 'channelName') && (key !== 'isLocked'))
     
     if (extraFields.length > 0) {
+        console.log('4')
         return false
     }
 
@@ -189,16 +201,46 @@ export function validateDmMsg(maybeMsg) {
         console.log("recieverId === ''")
         return false
     }
+
+    if (typeof (maybeMsg.senderName) !== "string") {
+        console.log('senderId !== "string"')
+        return false
+    } 
+    
+    if (maybeMsg.senderName === '') {
+        console.log("senderId === ''")
+        return false
+    }
+
+    if (typeof (maybeMsg.recieverName) !== "string") {
+        console.log('recieverId !== "string"')
+        return false
+    } 
+    
+    if (maybeMsg.recieverName === '') {
+        console.log("recieverId === ''")
+        return false
+    }
+
+    if (typeof (maybeMsg.conversationId) !== "string") {
+        console.log('conversationId !== "string"')
+        return false
+    } 
+    
+    if (maybeMsg.conversationId === '') {
+        console.log("conversationId === ''")
+        return false
+    }
     
     // Om maybeMsg innehåller några andra keys än spec
     const maybeMsgKeys = Object.keys(maybeMsg)
     // console.log(maybeMsgKeys)
-    const extraFields = maybeMsgKeys.filter(key => (key !== 'senderId') && (key !== 'recieverId') && (key !== 'msgBody') && (key !== 'sentAt'))
+    const extraFields = maybeMsgKeys.filter(key => (key !== 'senderId') && (key !== 'recieverId') && (key !== 'msgBody') && (key !== 'sentAt') && (key !== 'senderName') && (key !== 'recieverName') && (key !== 'conversationId'))
     
     if (extraFields.length > 0) {
         return false
     }
-
+    console.log('Validation success!')
     return true
 }
 

@@ -31,3 +31,16 @@
 .Header button {
     margin-right: 0.5em;
 }
+
+.Header .header-buttons {
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.Header .dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
