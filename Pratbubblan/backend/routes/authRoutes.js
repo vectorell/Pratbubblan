@@ -1,7 +1,7 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import { validateChannel, validateDmMsg, validateUserBody, validateChannelMsg, validateUserBodyPUT } from '../utils/validation.js'
-import { connectDb } from '../../config/db.js'
+import { connectDb } from '../utils/db.js'
 import { generateToken, secretKey } from '../utils/.secret.js'
 import bcryptjs from 'bcryptjs'
 import bcrypt from 'bcrypt'

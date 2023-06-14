@@ -1,6 +1,6 @@
 import express from 'express'
 import User from '../../models/Users.js'
-import { connectDb } from '../../config/db.js'
+import { connectDb } from '../utils/db.js'
 import dotenv from 'dotenv'
 dotenv.config()
 

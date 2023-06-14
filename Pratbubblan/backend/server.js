@@ -6,7 +6,7 @@ import authRoutes from './routes/authRoutes.js'
 import messageRoutes from './routes/messageRoutes.js'
 import canalRoute from './routes/canalRoutes.js'
 import morgan from 'morgan'
-import { connectDb } from '../config/db.js'
+import { connectDb } from './utils/db.js'
 
 const app = express()
 dotenv.config()

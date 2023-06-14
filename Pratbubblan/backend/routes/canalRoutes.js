@@ -1,7 +1,7 @@
 import express from 'express'
 import { authenticateToken } from './authRoutes.js'
 import { validateChannel } from '../utils/validation.js'
-import { connectDb } from '../../config/db.js'
+import { connectDb } from '../utils/db.js'
 import PrivateChannel from '../../models/ChannelsPrivate.js'
 import { validateChannelMsg } from '../utils/validation.js'
 import { randomUUID } from 'crypto'
