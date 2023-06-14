@@ -1,6 +1,6 @@
 import express from 'express'
-import { validateDmMsg } from '../utils/validation'
-import Conversation from '../../models/Conversation'
+import { validateDmMsg } from '../utils/validation.js'
+import Conversation from '../../models/Conversation.js'
 
 const router = express.Router()
 router.use( express.json() )
