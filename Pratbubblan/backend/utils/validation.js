@@ -237,7 +237,7 @@ export function validateDmMsg(maybeMsg) {
         && (key !== 'recieverName') 
         && (key !== 'conversationId'))
     
-    if (extraFields.length > 0) {
+    if (extraFields.length > 1) {
         console.log('FAILED: validateDmMessage: extraFields.length > 0')
         return false
     }

@@ -7,7 +7,7 @@ export async function putEditMessage(obj) {
     // maybeMsg.recieverName, ska vara en sträng
     // maybeMsg.conversationId, ska vara en sträng
 
-    const baseUrl = `/api/messages`
+    const baseUrl = `/api/messages/${obj.conversationId}`
 
     let maybeMsg = {
         msgBody: obj.msgBody,
@@ -21,7 +21,7 @@ export async function putEditMessage(obj) {
     let options = {
         method: 'PUT',
         headers: {"Content-Type": "application/json", "authorization": obj.token},
-        body: JSON.stringify(body)
+        body: JSON.stringify(maybeMsg)
     }
 
     try {

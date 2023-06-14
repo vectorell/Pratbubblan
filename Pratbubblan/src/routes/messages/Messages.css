@@ -84,8 +84,15 @@
 .edit-field {
     display: flex;
     align-items: center;
+    position: fixed;
+    bottom: 3em;
 }
 
 .edit-field button {
     margin: 0.5em;
+}
+
+#edit-form {
+    position: absolute;
+    
 }
