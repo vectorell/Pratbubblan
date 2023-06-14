@@ -10,7 +10,7 @@ import { connectDb } from './utils/db.js'
 
 const app = express()
 dotenv.config()
-const port = process.env.PORT || 7344
+const port = process.env.PORT
 
 // Anslut databas
 connectDb()
