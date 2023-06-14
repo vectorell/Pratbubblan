@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
-import config from "config";
-export const db = config.get('mongoURI')
+import dotenv from 'dotenv'
+dotenv.config()
 
 export async function connectDb() {
+    const db = process.env.mongoURI
     try {
         await mongoose.connect(db, {useNewUrlParser: true}) // ger tillbaka ett promise
         console.log('MongoDB ansluten..')
