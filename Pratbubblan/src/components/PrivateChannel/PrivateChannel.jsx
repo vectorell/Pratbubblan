@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil"
 import { privateChannelsState } from "../../recoil/atoms/privateChannelsState"
 import { usersListState } from "../../recoil/atoms/usersState"
 import './PrivateChannel.css'
-import { postChannelMessage } from "../../utils/AJAX/channelMessages/postChannelMessage"
+import { postPrivateChannelMessage } from "../../utils/AJAX/privateChannels/postPrivateChannelMessage"
 import { loggedInUser } from "../../recoil/atoms/loggedInUser"
 import { getSpecificUser } from "../../utils/AJAX/users/getSpecificUser"
 import { getAllChannels } from "../../utils/AJAX/channels/getAllChannels"
@@ -81,11 +81,13 @@ export function PrivateChannel() {
             token: isLoggedIn.token
         }
 
-        await postChannelMessage(msgObject)
+        console.log('PrivateChannel.jsx: msgObject: ', msgObject)
+
+        await postPrivateChannelMessage(msgObject)
         messageInput.current.value = ''
 
-        let fetchedChannels = await getPrivateChannels()
-        setPrivateChannels(await fetchedChannels)
+        let fetchedChannels = await getPrivateChannels(isLoggedIn.token)
+        setPrivateChannels(fetchedChannels)
 
         setActiveChannel((prevChannel) => {
             const updatedMessages = [...prevChannel.messages, msgObject];

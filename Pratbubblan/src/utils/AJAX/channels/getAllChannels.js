@@ -1,5 +1,5 @@
 export async function getAllChannels() {
-    const baseUrl = "http://localhost:1341/api/auth/channels"
+    const baseUrl = "/api/auth/channels"
 
     let response = await fetch (baseUrl)
     let parsedResponse = await response.json()

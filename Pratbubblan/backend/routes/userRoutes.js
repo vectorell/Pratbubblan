@@ -1,14 +1,7 @@
 import express from 'express'
-import { validateUserBody } from '../utils/validation.js'
-import jwt from 'jsonwebtoken'
-import { generateToken, secretKey } from '../utils/.secret.js'
-import bcryptjs from 'bcryptjs'
 import User from '../../models/Users.js'
 import { connectDb } from '../../config/db.js'
-import bcrypt from 'bcrypt'
-import config from 'config'
 import dotenv from 'dotenv'
-import { authenticateToken } from './authRoutes.js'
 dotenv.config()
 
 const router = express.Router()

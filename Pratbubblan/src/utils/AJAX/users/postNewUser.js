@@ -10,7 +10,7 @@ export async function postNewUser(obj) {
     }
 
     try {
-        const baseUrl = 'http://localhost:1341/api/auth/user'
+        const baseUrl = '/api/auth/user'
     
         const options = {
             method: 'POST',

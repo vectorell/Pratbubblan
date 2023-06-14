@@ -1,5 +1,5 @@
 export async function getPrivateChannels(token) {
-    const baseUrl = "http://localhost:1341/api/channels/private"
+    const baseUrl = "/api/channels/private"
 
     console.log('token in ajax: ',token)
 

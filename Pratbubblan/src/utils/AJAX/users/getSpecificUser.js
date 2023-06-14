@@ -1,5 +1,5 @@
 export async function getSpecificUser(id) {
-    const baseUrl = `http://localhost:1341/api/users/${id}`
+    const baseUrl = `/api/users/${id}`
 
     let response = await fetch (baseUrl)
     let parsedResponse = await response.json()

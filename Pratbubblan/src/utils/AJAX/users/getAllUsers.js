@@ -1,5 +1,5 @@
 export async function getAllUsers() {
-    const baseUrl = "http://localhost:1341/api/users"
+    const baseUrl = "/api/users"
 
     let response = await fetch (baseUrl)
     let parsedResponse = await response.json()

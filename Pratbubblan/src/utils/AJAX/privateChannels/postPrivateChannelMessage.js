@@ -1,35 +1,35 @@
-export async function postDmMessage(obj) {
+export async function postPrivateChannelMessage(obj) {
 
-    console.log('postDmMessage: obj: ', obj)
-    
+    console.log('postChannelMesage: obj: ', obj)
+
     let msgData = {
         msgBody: obj.msgBody,
         senderId: obj.senderId,
         senderName: obj.senderName,
         recieverId: obj.recieverId,
-        recieverName: obj.recieverId,
         msgId: obj.msgId,
-        conversationId: obj.conversationId
+        token: obj.token
     }
-    console.log('postDmMessage: msgData: ', msgData)
 
     try {
-        const baseUrl = '/api/auth/messages'
+        const baseUrl = '/api/channels/channelmessages/private/'
     
         const options = {
             method: 'POST',
             headers: {"Content-Type": "application/json", "authorization": obj.token},
             body: JSON.stringify(msgData)
         }
+
+        console.log('postChannelMessage: options: ', options)
     
         const response = await fetch(baseUrl, options)
         let parsedData = await response.json()
-        console.log(parsedData)
+        console.log('parsedData: ', parsedData)
 
         return
         
     } catch (error) {
-        console.log(error)
+        console.log('error', error)
         return
     }
 }

@@ -1,6 +1,6 @@
 export async function postChannelMessage(obj) {
 
-    console.log('ob: ', obj)
+    console.log('postChannelMesage: obj: ', obj)
 
     let msgData = {
         msgBody: obj.msgBody,
@@ -8,16 +8,19 @@ export async function postChannelMessage(obj) {
         senderName: obj.senderName,
         recieverId: obj.recieverId,
         msgId: obj.msgId,
+        token: obj.token
     }
 
     try {
-        const baseUrl = 'http://localhost:1341/api/channels/channelmessages/private'
+        const baseUrl = '/api/channels/channelmessages'
     
         const options = {
             method: 'POST',
             headers: {"Content-Type": "application/json", "authorization": obj.token},
             body: JSON.stringify(msgData)
         }
+
+        console.log('postChannelMessage: options: ', options)
     
         const response = await fetch(baseUrl, options)
         let parsedData = await response.json()

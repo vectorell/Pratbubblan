@@ -31,7 +31,7 @@ export function Channel() {
 
     function findChannel(id) {
         let foundChannel = channels.find(channel => channel._id === id)
-        console.log('foundChannel: ',foundChannel);
+        // console.log('foundChannel: ',foundChannel);
         
         if (foundChannel === undefined) {
             let foundPrivateChannel = privateChannels.find(channel => channel._id === id)
@@ -89,8 +89,10 @@ export function Channel() {
             senderId: sender._id,
             senderName: isLoggedIn.name,
             recieverId: channelId,
-            token: isLoggedIn.token
+            token: isLoggedIn.token,
         }
+
+        console.log('Channel.jsx: handleSend: msgObject: ', msgObject)
 
         await postChannelMessage(msgObject)
         messageInput.current.value = ''

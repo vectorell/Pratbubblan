@@ -18,11 +18,13 @@ dotenv.config()
 const router = express.Router()
 router.use( express.json() )
 
+// Autentiseringsmiddleware
 export function authenticateToken(req, res, next) {
+    console.log('authenticateToken: req.body: ', req.body)
     let token = req.headers?.authorization
-    console.log(token)
+    console.log('authenticateToken: token: ', token)
     const secret = secretKey
-    token = token.trim()
+    // token = token.trim()
 
     if (!token) {
         console.log('!token, inside auth-middleware')
@@ -41,27 +43,6 @@ export function authenticateToken(req, res, next) {
     })
 }
 
-
-// VILKA ROUTES SKA FINNAS HÄR I? VILKEN DATA BEHÖVS?
-/**
- * Vilka användare som finns?
- * Vilka chatrum som finns?
- * Radera användare
- * Ändra på en användare
- * Lägga till användare
- */
-
-
-// ENDPOINTS TILL
-/** Nytt DM-"rum" om inte redan finns                   OK
- *  (ändra databas för Hämta anv + hämta spec anv)      OK
- * Hämta kanalerna                                      
- * Hämta specifik kanal                                 
- */ 
-
-
-
-/**   USERS NEDAN **********************************************************/
 // [USERS - POST] - Logga in
 router.post('/login', async (req, res) => {
     const name = req.body?.name
@@ -180,12 +161,12 @@ router.post('/user', authenticateToken, async (req, res) => {
 // [USERS - DELETE] - Radera specifik användare
 router.delete('/delete-user/:uuid', authenticateToken, async (req,res) => {
     const uuid = req.params.uuid
-    console.log('HÄR: ', uuid)
+    console.log('/delete-user/:uuid: ', uuid)
 
     try {
         await connectDb()
         await User.findOneAndDelete({ _id: uuid })
-        console.log('Deletion successful!')
+        console.log('Deletion successful! (from "/delete-user/:uuid")')
         return res.sendStatus(200)
         
     } catch (error) {
@@ -193,8 +174,6 @@ router.delete('/delete-user/:uuid', authenticateToken, async (req,res) => {
         return res.sendStatus(404)
     }
 })
-
-/**    NEDAN **********************************************************/
 
 
 // [GET - Skapa eller hämta konversation (DM)]
@@ -234,9 +213,6 @@ router.get('/conversation/:firstid/:secondid', async (req, res) => {
         return res.sendStatus(409)
     }
 
-
-
-
     try {
         // Kolla om det redan finns en konversation mellan de givna användarna
         let checkForExistingConversation = await Conversation.findOne({
@@ -251,6 +227,7 @@ router.get('/conversation/:firstid/:secondid', async (req, res) => {
         console.log('Conversation exists? ', checkForExistingConversation)
 
         if (checkForExistingConversation) {
+            console.log('Conversation exists! (from "/conversation/:firstid/:secondid")')
             return res.status(302).send(checkForExistingConversation)
             // 302 Found
         }
@@ -259,8 +236,6 @@ router.get('/conversation/:firstid/:secondid', async (req, res) => {
         console.log(error)
         return res.sendStatus(400)
     }
-
-
 
     try {
         // Om ingen konversation finns, skapa ny
@@ -281,13 +256,15 @@ router.get('/conversation/:firstid/:secondid', async (req, res) => {
     }
 })
 
-
+// [GET] - Hämta publika kanaler
 router.get('/channels', async (req, res) => {
     try {
         const channels = await Channel.find()
         res.send(channels)
+        console.log('CHANNELS: Lyckad hämtning av publika kanaler.')
         return
     } catch (error) {
+        console.log('CHANNELS: Misslyckad hämtning av publika kanaler.')
         console.log(error)
         return res.sendStatus(400)
     }
@@ -325,6 +302,7 @@ router.post('/channels', async (req, res) => {
     // VALIDERING
     let approved = validateChannel(maybeChannel)
     if (!approved) {
+        console.log('Misslyckad validering! (från "/channels")')
         res.sendStatus(400)
         return
     }
@@ -335,6 +313,7 @@ router.post('/channels', async (req, res) => {
         await connectDb()
         const filteredChannels = await Channel.find({ channelName: req.body.channelName})
         if (filteredChannels.length > 0) {
+            console.log('Kanal finns redan! (från "/channels")')
             res.sendStatus(400)
             return
         }
@@ -403,72 +382,7 @@ router.post('/messages', async (req, res) => {
 })
 
 
-
-
-
-
-
-// try {
-//     // Kolla om kanal redan finns (genom mailadress)
-//     await connectDb()
-//     const filteredChannels = await Channel.find({ channelName: req.body.channelName})
-//     if (filteredChannels.length > 0) {
-//         res.sendStatus(400)
-//         return
-//     }
-
-//     // Skapa en ny instans av en kanal
-//     maybeChannel = new Channel({
-//         channelName: req.body.channelName,
-//         isLocked: req.body.isLocked
-//     })
-
-//     // Spara kanalen till databasen
-//     await maybeChannel.save()
-
-//     return res.sendStatus(200)
-// } catch (error) {
-//     res.sendStatus(400)
-//     return
-// }
-// })
-// Lägg till privat kanal
-// router.post('/channels/private', async (req, res) => {
-//     let maybeChannel = req.body
-    
-//     // VALIDERING
-//     let approved = validateChannel(maybeChannel)
-//     if (!approved) {
-//         res.sendStatus(400)
-//         return
-//     }
-    
-//     // Försök skapa en ny instans av en kanal
-//     try {
-//         // Kolla om kanal redan finns (genom mailadress)
-//         await connectDb()
-//         // const filteredChannels = await PrivateChannel.find({ channelName: req.body.channelName})
-//         // if (filteredChannels.length > 0) {
-//         //     res.sendStatus(400)
-//         //     return
-//         // }
-
-//         // Skapa en ny instans av en kanal
-//         maybeChannel = new PrivateChannel({
-//             channelName: req.body.channelName,
-//             isLocked: req.body.isLocked
-//         })
-
-//         // Spara kanalen till databasen
-//         await maybeChannel.save()
-
-//         return res.sendStatus(200)
-//     } catch (error) {
-//         res.sendStatus(400)
-//         return
-//     }
-// })
-
+// Testroute för token
 router.get('/control', authenticateToken, (req,res) => {
     res.send('GET /api/users<br/> <h1>  AUTH success! </h1>')
 })

@@ -1,6 +1,6 @@
 export async function putExistingUser(obj) {
 
-    const baseUrl = `http://localhost:1341/api/auth/${obj.uuid}`
+    const baseUrl = `/api/auth/${obj.uuid}`
     /**
      * Förväntar sig:
      *  obj = {

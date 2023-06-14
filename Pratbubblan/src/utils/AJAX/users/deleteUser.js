@@ -1,5 +1,5 @@
 export async function deleteUser(obj) {
-    const baseUrl = `http://localhost:1341/api/auth/delete-user/${obj.uuid}`
+    const baseUrl = `/api/auth/delete-user/${obj.uuid}`
 
     console.log('OBEJTKT : ', obj)
 

@@ -3,7 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import userRoute from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
-import conversationRoute from './routes/conversationRoutes.js'
+import messageRoutes from './routes/messageRoutes.js'
 import canalRoute from './routes/canalRoutes.js'
 import morgan from 'morgan'
 import { connectDb } from '../config/db.js'
@@ -24,38 +24,11 @@ app.use((req, res, next) => {
 
 app.use(morgan('common'))
 
-// ROUTE - användare (behöver ej auth)
-// - Hämta användare
-// - Hämta användardetaljer */
+
 app.use('/api/users', userRoute)
-
 app.use('/api/channels', canalRoute)
-
-// ROUTE - Auth (behöver auth)
-/** - Auth Middleware
- *  - ***** ANVÄNDARDEL *****
- *      - Redigera användare - OK
- *      - Lägga till användare - OK
- *      - Radera användare - OK
- *  - ***** KONVERSATIONSDEL *****
- *      - Skapa ny konversation 
- *      - Hämta alla konversationer för en användare 
- *      - Hämta specifik konversation 
- *      - Radera en konversation 
- *  - ***** KANALDEL *****
- *      - Joina låsta rum 
- *      - Skapa ny kanal 
- *      - Hämta specifik kanal 
- *      - Hämta alla kanaler 
- *      - Ta bort en kanal */
 app.use('/api/auth', authRoutes)
-
-
-
-
-
-
-
+app.use('/api/messages', messageRoutes)
 
 
 

@@ -31,7 +31,7 @@
     /* transition: 0.2s; */
 }
 
-/* .DmList a.active {
+.DmList a.active {
     font-weight: 600;
     color: rgb(119, 187, 255);
 }
@@ -40,4 +40,4 @@
     pointer-events:none;
     color: gray;
     text-decoration: line-through;
-} */
+}

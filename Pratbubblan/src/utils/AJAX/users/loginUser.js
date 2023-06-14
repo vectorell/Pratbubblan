@@ -5,7 +5,7 @@
 export async function loginUser(username, password) {
 
     try {
-        const baseUrl = 'http://localhost:1341/api/auth/login'
+        const baseUrl = '/api/auth/login'
     
         const loginAttempt = {
             name: username,
