@@ -7,6 +7,8 @@ import messageRoutes from './routes/messageRoutes.js'
 import canalRoute from './routes/canalRoutes.js'
 import morgan from 'morgan'
 import { connectDb } from './utils/db.js'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
 
 const app = express()
 dotenv.config()
