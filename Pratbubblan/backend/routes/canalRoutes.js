@@ -138,9 +138,144 @@ router.post('/channelmessages/private', authenticateToken, async (req, res) => {
     res.send(validChannelMessage)
 })
 
-// TODO: radera
-router.get('/', (req,res) => {
-    res.send('GET /api/users<br/> <h1>  CANALS success! </h1>')
+// Ändra på publikt meddelande
+router.put('/:channelId/:msgIndex', async (req,res) => {
+    const channelId = req.params.channelId
+    const msgIndex = req.params.msgIndex
+    let maybeMessage = req.body
+    // console.log('maybeMessage: ', maybeMessage)
+    console.log('msgIndex i server: ', msgIndex)
+
+    // VALIDERING
+    let approved = validateChannelMsg(maybeMessage)
+    // console.log('approved: ', approved)
+    
+    if (approved) {
+        await connectDb()
+
+        let foundChannel = Channel.findOne({ _id: channelId })
+        foundChannel && console.log('found channel!')
+
+        await Channel.updateOne(
+            { _id: channelId },
+            { $set: { [`messages.${msgIndex}`]: maybeMessage } }
+          );
+
+
+
+        res.sendStatus(200)
+        return 
+    } else {
+        console.log('error')
+        res.sendStatus(400)
+        return
+    }
+})
+
+// Ändra på privat kanalmeddelande
+router.put('/private/:channelId/:msgIndex', async (req,res) => {
+    const channelId = req.params.channelId
+    const msgIndex = req.params.msgIndex
+    let maybeMessage = req.body
+    // console.log('maybeMessage: ', maybeMessage)
+    console.log('msgIndex i server: ', msgIndex)
+
+    // VALIDERING
+    let approved = validateChannelMsg(maybeMessage)
+    // console.log('approved: ', approved)
+    
+    if (approved) {
+        await connectDb()
+
+        let foundChannel = Channel.findOne({ _id: channelId })
+        foundChannel && console.log('found channel!')
+
+        // Uppdatera sender
+        // await User.updateOne(
+        //     { _id: maybeMessage.senderId, messages: { $elemMatch: { _id: maybeMessage._id } } },
+        //     { $set: { "messages.$": maybeMessage } }
+        //   );
+        
+        // Uppdatera reciever
+        // await User.updateOne(
+        //     { _id: maybeMessage.recieverId, messages: { $elemMatch: { _id: maybeMessage._id } } },
+        //     { $set: { "messages.$": maybeMessage } }
+        //   );
+
+        // Uppdatera konversationens meddelande?
+        // await Conversation.updateOne(
+        //     { _id: convId },
+        //     { $set: { "messages.$[element]": maybeMessage } },
+        //     { arrayFilters: [{ "element._id": maybeMessage._id }] }
+        //   );
+
+        // await Conversation.updateOne(
+        //     { _id: convId },
+        //     { $set: { [`messages.${msgIndex}`]: maybeMessage } }
+        //   );
+
+        // const updatedUser = await User.findOneAndUpdate(filter, update)
+        // console.log(updatedUser.name, updatedUser.mail)
+
+        await PrivateChannel.updateOne(
+            { _id: channelId },
+            { $set: { [`messages.${msgIndex}`]: maybeMessage } }
+          );
+
+
+
+        res.sendStatus(200)
+        return 
+    } else {
+        console.log('error')
+        res.sendStatus(400)
+        return
+    }
+})
+
+// Radera kanalmeddelande
+router.delete('/:msgIndex', authenticateToken, async (req,res) => {
+    const msgIndex = req.params.msgIndex
+    const channelId = req.body.channelId
+    console.log('Radera kanalmeddelande, /channels/:msgIndex: ', msgIndex)
+    console.log('Radera kanalmeddelande, /channels/:channelId: ', channelId)
+
+    try {
+        await connectDb()
+        const conversation = await Channel.findOne({ _id: channelId })
+        // console.log(conversation)
+
+        conversation.messages.splice(msgIndex, 1)
+        await conversation.save()
+        return res.sendStatus(200)
+        
+    } catch (error) {
+        console.log(error.message)
+        return res.sendStatus(404)
+    }
+})
+
+
+// Radera privatkanalsmeddelande
+router.delete('/private/:msgIndex', authenticateToken, async (req,res) => {
+    const msgIndex = req.params.msgIndex
+    const channelId = req.body.channelId
+    console.log('Radera privatkanalsmeddelande, /channels/private/:msgIndex: ', msgIndex)
+    console.log('Radera privatkanalsmeddelande, /channels/private/:channelId: ', channelId)
+
+    try {
+        await connectDb()
+        const conversation = await PrivateChannel.findOne({ _id: channelId })
+        // console.log(conversation)
+
+        conversation.messages.splice(msgIndex, 1)
+        await conversation.save()
+        return res.sendStatus(200)
+        
+    } catch (error) {
+        console.log(error.message)
+        return res.sendStatus(404)
+    }
 })
 
 export default router

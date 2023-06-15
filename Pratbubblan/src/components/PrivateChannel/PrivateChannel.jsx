@@ -13,6 +13,12 @@ import { getSpecificUser } from "../../utils/AJAX/users/getSpecificUser"
 import { getAllChannels } from "../../utils/AJAX/channels/getAllChannels"
 import { loginState } from "../../recoil/atoms/loginState"
 import { getPrivateChannels } from "../../utils/AJAX/privateChannels/getPrivateChannels"
+import { fetchOrCreateConversation } from "../../utils/AJAX/conversation/fetchOrCreateConversation"
+import { currentRecieverState } from "../../recoil/atoms/currentReciever"
+import { putEditMessage } from "../../utils/AJAX/dmMessages/putEditMessage"
+import { currentConversationState } from "../../recoil/atoms/currentConversationState"
+import { putEditPrivateChannelMessage } from "../../utils/AJAX/channelMessages/putEditPrivateChannelMessage"
+import { deletePrivateChannelMsg } from "../../utils/AJAX/channelMessages/deletePrivateChannelMsg"
 
 export function PrivateChannel() {
     const {channelId} = useParams()
@@ -23,8 +29,19 @@ export function PrivateChannel() {
     const [userLoggedIn, setUserLoggedIn] = useRecoilState(loggedInUser)
     const [messages, setMessages] = useState(null)
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
+    const [currentlyEditing, setCurrentlyEditing] = useState(false);
+    const [clickedUser, setClickedUser] = useState("");
+    const [userIndex, setUserIndex] = useState(0);
+    const [editMessage, setEditMessage] = useState(false);
+    const [currentReciever, setCurrentReciever] =
+        useRecoilState(currentRecieverState);
+    const [editInputValue, setEditInputValue] = useState("");
+    const [currentConversation, setCurrentConversation] = useRecoilState(
+        currentConversationState
+    );
 
     const messageInput = useRef(null)
+    const editMessageInput = useRef(null);
 
 
     // function findChannel(id) {
@@ -95,6 +112,98 @@ export function PrivateChannel() {
         })
     }
 
+    async function handleEdit(sender, index) {
+        setUserIndex(index);
+
+        if (sender === isLoggedIn.name) {
+            setEditMessage(!editMessage);
+            setCurrentlyEditing(!currentlyEditing);
+            console.log(clickedUser);
+            // let channelMSGS = await fetchOrCreateConversation(
+            //     isLoggedIn.uuid,
+            //     currentReciever._id,
+            //     isLoggedIn.token
+            // );
+            // console.log("channelMSGS: ", channelMSGS.messages);
+        }
+    }
+
+    async function editUserMessage(e) {
+        e.preventDefault();
+        setCurrentlyEditing(!currentlyEditing);
+
+        // console.log('1')
+        // console.log(editInputValue)
+        // console.log(isLoggedIn.uuid)
+        // console.log(isLoggedIn.name)
+        // console.log(currentReciever._id)
+        // console.log(currentReciever.name)
+        // console.log(currentConversation._id)
+        // console.log(isLoggedIn.token)
+        // console.log(userIndex)
+
+        try {
+            let msgObj = {
+                msgBody: editInputValue,
+                senderId: isLoggedIn.uuid,
+                senderName: isLoggedIn.name,
+                recieverId: activeChannel._id,
+                channelId: activeChannel._id,
+                token: isLoggedIn.token,
+                userIndex: userIndex,
+                msgId: clickedUser.msgId
+            };
+
+            console.log('innan await')
+            await putEditPrivateChannelMessage(msgObj)
+            console.log('efter await')
+
+            let updatedChannels = await getPrivateChannels(isLoggedIn.token)
+
+            setPrivateChannels(updatedChannels)
+
+            setActiveChannel((prevActiveChannel) => {
+                const updatedMessages = [...prevActiveChannel.messages];
+
+                updatedMessages[userIndex] = msgObj;
+
+                return { ...prevActiveChannel, messages: updatedMessages };
+            })
+        } catch (error) {
+            console.log('fel')
+        }
+    }
+
+    async function deleteUserMessage(e) {
+        e.preventDefault();
+        setCurrentlyEditing(!currentlyEditing);
+
+        console.log(userIndex);
+
+        try {
+
+            await deletePrivateChannelMsg(userIndex, activeChannel._id, isLoggedIn.token)
+
+            const updatedMessages = activeChannel.messages.filter(
+                (message, i) => i !== userIndex
+            );
+
+            setActiveChannel((prevActiveChannel) => ({
+                ...prevActiveChannel,
+                messages: updatedMessages,
+            }));
+
+            let updatedChannels = await getPrivateChannels(isLoggedIn.token)
+            setPrivateChannels(updatedChannels)
+
+        } catch (error) {}
+    }
+
+    function handleChange() {
+        setEditInputValue(editMessageInput.current.value);
+        console.log(activeChannel._id)
+        console.log(clickedUser)
+    }
 
 
     
@@ -109,7 +218,11 @@ export function PrivateChannel() {
             {
                 activeChannel &&
                 activeChannel.messages.map((message, index) => (
-                    <div key= {index}>
+                    <div key= {index}
+                    onClick={(e) => {
+                        handleEdit(message.senderName, index);
+                        setClickedUser(message);
+                    }}>
                     <div className="message">
                         {/* <h4> {convertSenderIdToUsername(message.senderId)}:</h4> */}
                         <h4> {message.senderName}:</h4>
@@ -119,6 +232,30 @@ export function PrivateChannel() {
                     </div>
                 ))
             }
+
+<div>
+                {currentlyEditing &&
+                    clickedUser.senderName === isLoggedIn.name && (
+                        <div className="edit-field">
+                            <form id="edit-form">
+                                <input
+                                    type="text"
+                                    placeholder={clickedUser.msgBody}
+                                    ref={editMessageInput}
+                                    onChange={handleChange}
+                                />
+                                <button onClick={editUserMessage}>
+                                    {" "}
+                                    Spara ändring{" "}
+                                </button>
+                                <button onClick={(e) => deleteUserMessage(e)}>
+                                    {" "}
+                                    Radera{" "}
+                                </button>
+                            </form>
+                        </div>
+                    )}
+            </div>
 
             {isLoggedIn &&
             <form>

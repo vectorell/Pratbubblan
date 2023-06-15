@@ -10,10 +10,12 @@ const router = express.Router()
 router.use( express.json() )
 
 // Ändra på meddelande
-router.put('/:convId', async (req,res) => {
+router.put('/:convId/:msgIndex', async (req,res) => {
     const convId = req.params.convId
+    const msgIndex = req.params.msgIndex
     let maybeMessage = req.body
     // console.log('maybeMessage: ', maybeMessage)
+    console.log('userIndex i server: ', msgIndex)
 
     // VALIDERING
     let approved = validateDmMsg(maybeMessage)
@@ -23,24 +25,30 @@ router.put('/:convId', async (req,res) => {
         await connectDb()
 
         let foundConversation = Conversation.findOne({ _id: convId })
+        foundConversation && console.log('found conversation!')
 
         // Uppdatera sender
-        await User.updateOne(
-            { _id: maybeMessage.senderId, messages: { $elemMatch: { _id: maybeMessage._id } } },
-            { $set: { "messages.$": maybeMessage } }
-          );
+        // await User.updateOne(
+        //     { _id: maybeMessage.senderId, messages: { $elemMatch: { _id: maybeMessage._id } } },
+        //     { $set: { "messages.$": maybeMessage } }
+        //   );
         
         // Uppdatera reciever
-        await User.updateOne(
-            { _id: maybeMessage.recieverId, messages: { $elemMatch: { _id: maybeMessage._id } } },
-            { $set: { "messages.$": maybeMessage } }
-          );
+        // await User.updateOne(
+        //     { _id: maybeMessage.recieverId, messages: { $elemMatch: { _id: maybeMessage._id } } },
+        //     { $set: { "messages.$": maybeMessage } }
+        //   );
 
         // Uppdatera konversationens meddelande?
+        // await Conversation.updateOne(
+        //     { _id: convId },
+        //     { $set: { "messages.$[element]": maybeMessage } },
+        //     { arrayFilters: [{ "element._id": maybeMessage._id }] }
+        //   );
+
         await Conversation.updateOne(
             { _id: convId },
-            { $set: { "messages.$[element]": maybeMessage } },
-            { arrayFilters: [{ "element._id": maybeMessage._id }] }
+            { $set: { [`messages.${msgIndex}`]: maybeMessage } }
           );
 
         // const updatedUser = await User.findOneAndUpdate(filter, update)
@@ -54,7 +62,7 @@ router.put('/:convId', async (req,res) => {
     }
 })
 
-// Radera meddelande
+// Radera DM meddelande
 router.delete('/:msgIndex', authenticateToken, async (req,res) => {
     const msgIndex = req.params.msgIndex
     const conversationId = req.body.conversationId

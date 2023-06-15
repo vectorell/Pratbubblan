@@ -11,7 +11,6 @@ import { fetchOrCreateConversation } from "../../utils/AJAX/conversation/fetchOr
 import { putEditMessage } from "../../utils/AJAX/dmMessages/putEditMessage";
 import { deleteMsg } from "../../utils/AJAX/dmMessages/deleteMsg";
 
-
 export function Messages() {
     const [currentConversation, setCurrentConversation] = useRecoilState(
         currentConversationState
@@ -22,10 +21,10 @@ export function Messages() {
     const [editMessage, setEditMessage] = useState(false);
     const [currentlyEditing, setCurrentlyEditing] = useState(false);
     const { conversationId } = useParams();
-    const [clickedUser, setClickedUser] = useState('')
-    const [editInputValue, setEditInputValue] = useState('')
-    const [updateComponent, setUpdateComponent] = useState(false)
-    const [deleteIndex, setDeleteIndex] = useState(0)
+    const [clickedUser, setClickedUser] = useState("");
+    const [editInputValue, setEditInputValue] = useState("");
+    const [updateComponent, setUpdateComponent] = useState(false);
+    const [userIndex, setUserIndex] = useState(0);
 
     const messageInput = useRef(null);
     const editMessageInput = useRef(null);
@@ -81,82 +80,72 @@ export function Messages() {
         });
     }
 
-    // function handleMessage(e) {
-    //     // setEditMessage(!editMessage)
-    //     // console.log(e.nativeEvent)
-    //     // console.log(currentConversation.messages.filter(sender => e.senderName === isLoggedIn.name))
-    //     let filtered = currentConversation.messages.filter(msg => msg.senderName === isLoggedIn.name)
-    //     console.log(filtered)
-    //     // let filteredMessages = currentConversation.messages.filter(e)
-    //     filtered.forEach(msg => {
-    //         if (msg.senderName === isLoggedIn.name) {
-    //             console.log(isLoggedIn)
-    //         }
-    //     })
-    // }
-
     async function handleEdit(sender, index) {
-        setDeleteIndex(index)
+        setUserIndex(index);
 
         if (sender === isLoggedIn.name) {
             setEditMessage(!editMessage);
             setCurrentlyEditing(!currentlyEditing);
-            console.log(clickedUser)
-            let channelMSGS = await fetchOrCreateConversation(isLoggedIn.uuid, currentReciever._id, isLoggedIn.token)
-            console.log('channelMSGS: ', channelMSGS.messages)
+            console.log(clickedUser);
+            let channelMSGS = await fetchOrCreateConversation(
+                isLoggedIn.uuid,
+                currentReciever._id,
+                isLoggedIn.token
+            );
+            console.log("channelMSGS: ", channelMSGS.messages);
         }
     }
 
     async function editUserMessage(e) {
-        e.preventDefault()
-        setCurrentlyEditing(!currentlyEditing)
-        console.log("editmessage");
-        
-        console.log(editMessageInput.current.value)
+        e.preventDefault();
+        setCurrentlyEditing(!currentlyEditing);
 
-        let msgObj = {
-            msgBody: editInputValue,
-            senderId: isLoggedIn.uuid,
-            senderName: isLoggedIn.name,
-            recieverId: currentReciever._id,
-            recieverName: currentReciever.name,
-            conversationId: currentConversation._id,
-            token: isLoggedIn.token
-        };
-        // console.log(msgObj)
-        await putEditMessage(msgObj)
-        // await fetchOrCreateConversation(isLoggedIn.uuid, currentReciever._id, isLoggedIn.token)
+        try {
+            let msgObj = {
+                msgBody: editInputValue,
+                senderId: isLoggedIn.uuid,
+                senderName: isLoggedIn.name,
+                recieverId: currentReciever._id,
+                recieverName: currentReciever.name,
+                conversationId: currentConversation._id,
+                token: isLoggedIn.token,
+                userIndex: userIndex,
+            };
 
+            await putEditMessage(msgObj);
 
-        // let check = (await fetchOrCreateConversation(isLoggedIn.uuid, currentReciever._id, isLoggedIn.token))
-        // setCurrentConversation(check)
-        // setCurrentConversation((prevConversation) => {
-        //     const updatedMessages = [...prevConversation.messages, msgObj];
-        //     return { ...prevConversation, messages: updatedMessages };
-        // });
+            setCurrentConversation((prevConversation) => {
+                const updatedMessages = [...prevConversation.messages];
+                updatedMessages[userIndex] = msgObj;
+
+                return { ...prevConversation, messages: updatedMessages };
+            });
+        } catch (error) {}
+        console.log('fel')
     }
 
-
     async function deleteUserMessage(e) {
-        e.preventDefault()
-        setCurrentlyEditing(!currentlyEditing)
+        e.preventDefault();
+        setCurrentlyEditing(!currentlyEditing);
 
-        console.log(deleteIndex)
-        
+        console.log(userIndex);
+
         try {
-            // const messageId = currentConversation.messages[deleteIndex]._id
-            await deleteMsg(deleteIndex, currentConversation._id, isLoggedIn.token)
-            
+            await deleteMsg(
+                userIndex,
+                currentConversation._id,
+                isLoggedIn.token
+            );
+
             const updatedMessages = currentConversation.messages.filter(
-                (message, i) => i !== deleteIndex)
+                (message, i) => i !== userIndex
+            );
 
             setCurrentConversation((prevConversation) => ({
-            ...prevConversation,
-            messages: updatedMessages,
-            }))
-        } catch (error) {
-            
-        }
+                ...prevConversation,
+                messages: updatedMessages,
+            }));
+        } catch (error) {}
     }
 
     function handleInputClick(e) {
@@ -164,8 +153,7 @@ export function Messages() {
     }
 
     function handleChange() {
-        console.log(editMessageInput.current.value)
-        setEditInputValue(editMessageInput.current.value)
+        setEditInputValue(editMessageInput.current.value);
     }
 
     return (
@@ -176,16 +164,14 @@ export function Messages() {
                 <h2> & </h2>
                 <h1> {currentReciever.name} </h1>
             </div>
-            <div>
-                
-            </div>
+            <div></div>
             {currentConversation &&
                 currentConversation.messages.map((message, index) => (
                     <div
                         key={index}
                         onClick={(e) => {
-                            handleEdit(message.senderName, index)
-                            setClickedUser(message)
+                            handleEdit(message.senderName, index);
+                            setClickedUser(message);
                         }}
                     >
                         <div className="message">
@@ -195,24 +181,29 @@ export function Messages() {
                         <p id="sent-at">{message.sentAt}</p>
                     </div>
                 ))}
-                <div>
+            <div>
                 {currentlyEditing &&
-                    clickedUser.senderName ===
-                        isLoggedIn.name && (
-                            <div className="edit-field">
+                    clickedUser.senderName === isLoggedIn.name && (
+                        <div className="edit-field">
                             <form id="edit-form">
-                            <input
-                                type="text"
-                                placeholder={clickedUser.msgBody}
-                                ref={editMessageInput}
-                                onChange={handleChange}
-                            />
-                            <button onClick={editUserMessage}> Spara ändring </button>
-                            <button onClick={(e) => deleteUserMessage(e)}> Radera </button>
+                                <input
+                                    type="text"
+                                    placeholder={clickedUser.msgBody}
+                                    ref={editMessageInput}
+                                    onChange={handleChange}
+                                />
+                                <button onClick={editUserMessage}>
+                                    {" "}
+                                    Spara ändring{" "}
+                                </button>
+                                <button onClick={(e) => deleteUserMessage(e)}>
+                                    {" "}
+                                    Radera{" "}
+                                </button>
                             </form>
-                            </div>
-                    )}               
-                </div>
+                        </div>
+                    )}
+            </div>
 
             {isLoggedIn && (
                 <form>

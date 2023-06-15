@@ -1,59 +1,53 @@
-import { useRecoilState } from 'recoil'
-import './EditAccount.css'
-import { loginState } from '../../recoil/atoms/loginState'
-import { useEffect, useRef, useState } from 'react'
-import { putExistingUser } from '../../utils/AJAX/users/putExistingUser'
-import { useParams } from 'react-router'
-import { deleteUser } from '../../utils/AJAX/users/deleteUser'
-import { useNavigate } from 'react-router'
+import { useRecoilState } from "recoil";
+import "./EditAccount.css";
+import { loginState } from "../../recoil/atoms/loginState";
+import { useRef, useState } from "react";
+import { putExistingUser } from "../../utils/AJAX/users/putExistingUser";
+import { useParams } from "react-router";
+import { deleteUser } from "../../utils/AJAX/users/deleteUser";
+import { useNavigate } from "react-router";
 
 export function EditAccount() {
-    const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
-    const [confirmation, setConfirmation] = useState(false)
-
-    const usernameInput = useRef(null)
-    const emailInput = useRef(null)
-    // const passwordInput = useRef(null)
-    const {uuid} = useParams()
-
-    const navigate = useNavigate()
-
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+    const [confirmation, setConfirmation] = useState(false);
+    const usernameInput = useRef(null);
+    const emailInput = useRef(null);
+    const { uuid } = useParams();
+    const navigate = useNavigate();
 
     async function handleClick(e) {
-        e.preventDefault()
+        e.preventDefault();
 
-        let updatedUsername = usernameInput.current.value
-        let updatedEmail = emailInput.current.value
+        let updatedUsername = usernameInput.current.value;
+        let updatedEmail = emailInput.current.value;
 
         let reqBody = {
             name: updatedUsername,
             mail: updatedEmail,
             uuid: isLoggedIn.uuid,
-            token: isLoggedIn.token
-        }
+            token: isLoggedIn.token,
+        };
 
-        await putExistingUser(reqBody)
-
-        usernameInput.current.value = ''
-        emailInput.current.value = ''
+        await putExistingUser(reqBody);
+        usernameInput.current.value = "";
+        emailInput.current.value = "";
     }
 
     async function handleDelete(e) {
-        e.preventDefault()
-        setConfirmation(!confirmation)
+        e.preventDefault();
+        setConfirmation(!confirmation);
 
         let reqBody = {
             uuid: isLoggedIn.uuid,
-            token: isLoggedIn.token
-        }
+            token: isLoggedIn.token,
+        };
 
-        console.log('reqBody: ', reqBody)
+        console.log("reqBody: ", reqBody);
 
-        await deleteUser(reqBody)
-        navigate("/")
-        // setIsLoggedIn('')
+        await deleteUser(reqBody);
+        navigate("/");
     }
-    
+
     return (
         <div className="EditAccount">
             <h1> Hej, {isLoggedIn.name}! </h1>
@@ -62,26 +56,27 @@ export function EditAccount() {
             <form>
                 <div>
                     <p> Användarnamn: </p>
-                    <input type="text" ref={usernameInput}/>
+                    <input type="text" ref={usernameInput} />
                 </div>
                 <div>
                     <p> Mailadress:</p>
-                    <input type="text" ref={emailInput}/>
+                    <input type="text" ref={emailInput} />
                 </div>
-                {/* <div>
-                    <p> Lösenord: </p>
-                    <input type="password" ref={passwordInput}/>
-                </div> */}
+
                 <div>
                     <button onClick={handleClick}> Spara </button>
-                    {!confirmation && <button onClick={() => setConfirmation(true)}> Radera konto </button>}
+                    {!confirmation && (
+                        <button onClick={() => setConfirmation(true)}>
+                            {" "}
+                            Radera konto{" "}
+                        </button>
+                    )}
 
-                    {confirmation && <button onClick={handleDelete}> Är du säker? </button>}
-                    
+                    {confirmation && (
+                        <button onClick={handleDelete}> Är du säker? </button>
+                    )}
                 </div>
-
             </form>
-
         </div>
-    )
+    );
 }

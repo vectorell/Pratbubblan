@@ -1,14 +1,14 @@
-export async function putEditMessage(obj) {
-    console.log('inuti putEditMessage')
+export async function putEditPrivateChannelMessage(obj) {
+    console.log('inuti putEditPrivateChannelMessage')
     // maybeMsg, ska vara ett objekt
     // maybeMsg.msgBody ska vara en sträng
     // maybeMsg.senderId, ska vara en sträng
     // maybeMsg.recieverId, ska vara en sträng ()
     // maybeMsg.senderName, ska vara en sträng
     // maybeMsg.recieverName, ska vara en sträng
-    // maybeMsg.conversationId, ska vara en sträng
+    // maybeMsg.channelId, ska vara en sträng
 
-    const baseUrl = `/api/messages/${obj.conversationId}/${obj.userIndex}`
+    const baseUrl = `/api/channels/private/${obj.channelId}/${obj.userIndex}`
 
     
     let maybeMsg = {
@@ -16,8 +16,9 @@ export async function putEditMessage(obj) {
         senderId: obj.senderId,
         senderName: obj.senderName,
         recieverId: obj.recieverId,
-        recieverName: obj.recieverName,
-        conversationId: obj.conversationId
+        token: obj.token,
+        sentAt: new Date(),
+        msgId: obj.msgId
     }
     // console.log('userIndex i ajax: ', obj.userIndex)
 
