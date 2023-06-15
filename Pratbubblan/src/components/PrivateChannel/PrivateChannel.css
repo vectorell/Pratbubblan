@@ -80,6 +80,14 @@
     background-color: rgb(53, 53, 53);
 }
 
+.PrivateChannel .edit-msg {
+    position: fixed;
+    bottom: 4em;
+    margin-left: 1em;
+    color:rgb(133, 133, 133);
+    font-weight: 300;
+}
+
 #sent-at {
     color:rgba(100, 100, 100, 0.563);
     font-size: 0.8em;

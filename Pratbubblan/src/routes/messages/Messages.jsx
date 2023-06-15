@@ -204,6 +204,7 @@ export function Messages() {
                             </form>
                         </div>
                     )}
+                    {(isLoggedIn && !currentlyEditing) && <p className="edit-msg"> Klicka på en av dina meddelanden för att ändra eller radera </p>}
             </div>
 
             {isLoggedIn && (

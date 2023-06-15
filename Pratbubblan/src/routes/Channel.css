@@ -97,6 +97,14 @@
     font-weight: 300;
 }
 
+.Channel .edit-msg {
+    position: fixed;
+    bottom: 4em;
+    margin-left: 1em;
+    color:rgb(133, 133, 133);
+    font-weight: 300;
+}
+
 .channel-title {
     background-color: rgb(53, 53, 53);
 }
