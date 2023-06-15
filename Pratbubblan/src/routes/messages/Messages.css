@@ -51,6 +51,17 @@
     margin-left: 1em;
 }
 
+.message:hover {
+    background-color: rgb(95, 95, 95);
+    cursor: pointer;
+    /* transition: 0.2s; */
+}
+.message:active {
+    background-color: rgb(182, 182, 182);
+    cursor: pointer;
+    transition: 0s;
+}
+
 .Messages form {
     display: flex;
     position: fixed;

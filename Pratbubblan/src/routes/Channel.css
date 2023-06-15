@@ -49,6 +49,18 @@
     max-width: fit-content;
     box-shadow: 1px 1px 11px rgba(0, 0, 0, 0.59);
     margin-left: 1em;
+    transition: 0.2s;
+}
+
+.message:hover {
+    background-color: rgb(95, 95, 95);
+    cursor: pointer;
+    /* transition: 0.2s; */
+}
+.message:active {
+    background-color: rgb(182, 182, 182);
+    cursor: pointer;
+    transition: 0s;
 }
 
 .Channel form {
