@@ -15,6 +15,10 @@ const port = process.env.PORT
 // Anslut databas
 connectDb()
 
+const whereWeAre = dirname(fileURLToPath(import.meta.url))
+const dist = join(whereWeAre, '../dist')
+app.use( express.static(dist) )
+
 app.use( cors() )
 app.use( express.json() )
 app.use((req, res, next) => {
