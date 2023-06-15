@@ -1,6 +1,6 @@
 export async function deleteMsg(msgIndex, conversationId, token) {
-    console.log('deleteMsg: msgIndex: ', msgIndex)
-    console.log('deleteMsg: conversationId: ', conversationId)
+    // console.log('deleteMsg: msgIndex: ', msgIndex)
+    // console.log('deleteMsg: conversationId: ', conversationId)
 
     const data = {
         conversationId: conversationId

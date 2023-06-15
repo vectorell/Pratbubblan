@@ -1,5 +1,5 @@
 export async function putEditChannelMessage(obj) {
-    console.log('inuti putEditChannelMessage')
+    // console.log('inuti putEditChannelMessage')
     // maybeMsg, ska vara ett objekt
     // maybeMsg.msgBody ska vara en sträng
     // maybeMsg.senderId, ska vara en sträng
@@ -32,7 +32,7 @@ export async function putEditChannelMessage(obj) {
         let response = await fetch ( baseUrl, options)
         // let parsedResponse = await response.json()
         // console.log(parsedResponse)
-        console.log(response)
+        // console.log(response)
     } catch (error) {
         // console.log(error)
     }

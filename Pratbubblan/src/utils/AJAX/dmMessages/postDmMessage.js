@@ -1,6 +1,6 @@
 export async function postDmMessage(obj) {
 
-    console.log('postDmMessage: obj: ', obj)
+    // console.log('postDmMessage: obj: ', obj)
     
     let msgData = {
         msgBody: obj.msgBody,
@@ -11,7 +11,7 @@ export async function postDmMessage(obj) {
         msgId: obj.msgId,
         conversationId: obj.conversationId
     }
-    console.log('postDmMessage: msgData: ', msgData)
+    // console.log('postDmMessage: msgData: ', msgData)
 
     try {
         const baseUrl = '/api/auth/messages'
@@ -24,7 +24,7 @@ export async function postDmMessage(obj) {
     
         const response = await fetch(baseUrl, options)
         let parsedData = await response.json()
-        console.log(parsedData)
+        // console.log(parsedData)
 
         return
         

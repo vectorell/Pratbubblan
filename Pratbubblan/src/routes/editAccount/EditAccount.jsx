@@ -42,7 +42,7 @@ export function EditAccount() {
             token: isLoggedIn.token,
         };
 
-        console.log("reqBody: ", reqBody);
+        // console.log("reqBody: ", reqBody);
 
         await deleteUser(reqBody);
         navigate("/");

@@ -1,7 +1,7 @@
 export async function getPrivateChannels(token) {
     const baseUrl = "/api/channels/private"
 
-    console.log('token in ajax: ',token)
+    // console.log('token in ajax: ',token)
 
     let options = {
         method: 'GET',
@@ -10,6 +10,6 @@ export async function getPrivateChannels(token) {
 
     let response = await fetch (baseUrl, options)
     let parsedResponse = await response.json()
-    console.log(parsedResponse)
+    // console.log(parsedResponse)
     return parsedResponse
 }

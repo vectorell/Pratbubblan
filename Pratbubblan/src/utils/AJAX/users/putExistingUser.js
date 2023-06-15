@@ -25,14 +25,8 @@ export async function putExistingUser(obj) {
         let response = await fetch ( baseUrl, options)
         // let parsedResponse = await response.json()
         // console.log(parsedResponse)
-        console.log(response)
+        // console.log(response)
     } catch (error) {
         // console.log(error)
     }
-
-
-
-
-    // console.log(body);
-    console.log('Sparaknapp tryckt!')
 }

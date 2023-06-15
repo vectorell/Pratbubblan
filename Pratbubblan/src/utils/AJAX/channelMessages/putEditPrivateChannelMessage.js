@@ -1,5 +1,6 @@
+
 export async function putEditPrivateChannelMessage(obj) {
-    console.log('inuti putEditPrivateChannelMessage')
+    // console.log('inuti putEditPrivateChannelMessage')
     // maybeMsg, ska vara ett objekt
     // maybeMsg.msgBody ska vara en sträng
     // maybeMsg.senderId, ska vara en sträng
@@ -32,7 +33,7 @@ export async function putEditPrivateChannelMessage(obj) {
         let response = await fetch ( baseUrl, options)
         // let parsedResponse = await response.json()
         // console.log(parsedResponse)
-        console.log(response)
+        // console.log(response)
     } catch (error) {
         // console.log(error)
     }

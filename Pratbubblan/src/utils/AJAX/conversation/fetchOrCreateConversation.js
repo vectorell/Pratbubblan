@@ -1,7 +1,7 @@
 export async function fetchOrCreateConversation(currentUser, recieverUser, token) {
 
-    console.log('currentUser: ', currentUser)
-    console.log('recieverUser: ', recieverUser)
+    // console.log('currentUser: ', currentUser)
+    // console.log('recieverUser: ', recieverUser)
 
     const baseUrl = `/api/auth/conversation/${currentUser}/${recieverUser}`
 
@@ -12,7 +12,7 @@ export async function fetchOrCreateConversation(currentUser, recieverUser, token
 
     let response = await fetch(baseUrl, options)
     let parsedResponse = await response.json()
-    console.log(parsedResponse)
+    // console.log(parsedResponse)
 
     return parsedResponse
 }

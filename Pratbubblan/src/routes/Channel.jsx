@@ -3,16 +3,12 @@ import { useParams } from "react-router";
 import { chosenChannel } from "../recoil/atoms/chosenChannel";
 import { useRecoilState } from "recoil";
 import { channelsState } from "../recoil/atoms/channelsState";
-import { usersListState } from "../recoil/atoms/usersState";
 import "./Channel.css";
 import { postChannelMessage } from "../utils/AJAX/channelMessages/postChannelMessage";
-import { loggedInUser } from "../recoil/atoms/loggedInUser";
 import { getSpecificUser } from "../utils/AJAX/users/getSpecificUser";
 import { getAllChannels } from "../utils/AJAX/channels/getAllChannels";
 import { loginState } from "../recoil/atoms/loginState";
 import { privateChannelsState } from "../recoil/atoms/privateChannelsState";
-import { currentConversationState } from "../recoil/atoms/currentConversationState";
-import { currentRecieverState } from "../recoil/atoms/currentReciever";
 import { putEditChannelMessage } from "../utils/AJAX/channelMessages/putEditChannelMessage";
 import { deleteChannelMsg } from "../utils/AJAX/channelMessages/deleteChannelMsg";
 
@@ -23,7 +19,6 @@ export function Channel() {
         useRecoilState(privateChannelsState);
 
     const [activeChannel, setActiveChannel] = useRecoilState(chosenChannel);
-    const [users, setUsers] = useRecoilState(usersListState);
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
     const [currentlyEditing, setCurrentlyEditing] = useState(false);
     const [clickedUser, setClickedUser] = useState("");
@@ -78,7 +73,7 @@ export function Channel() {
             token: isLoggedIn.token,
         };
 
-        console.log("Channel.jsx: handleSend: msgObject: ", msgObject);
+        // console.log("Channel.jsx: handleSend: msgObject: ", msgObject);
 
         await postChannelMessage(msgObject);
         messageInput.current.value = "";
@@ -160,8 +155,8 @@ export function Channel() {
 
     function handleChange() {
         setEditInputValue(editMessageInput.current.value);
-        console.log(activeChannel._id);
-        console.log(clickedUser);
+        // console.log(activeChannel._id);
+        // console.log(clickedUser);
     }
 
     return (

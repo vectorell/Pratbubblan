@@ -26,12 +26,12 @@ export function MainContent() {
         try {
             let fetchedChannels = await getAllChannels();
             setChannels(fetchedChannels);
-            console.log(channels);
+            // console.log(channels);
         } catch (error) {}
     }
 
     async function fetchPrivateChannels(token) {
-        console.log("fetchPrivateChannels: token: ", await token);
+        // console.log("fetchPrivateChannels: token: ", await token);
         // let testCookie = document.cookie.split('=')[1]
         // if (testCookie === '' || testCookie === undefined || testCookie === null) {
         //     return
@@ -58,7 +58,7 @@ export function MainContent() {
         try {
             let fetchedUsers = await getAllUsers();
             setUsers(fetchedUsers);
-            console.log(users);
+            // console.log(users);
         } catch (error) {}
     }
 

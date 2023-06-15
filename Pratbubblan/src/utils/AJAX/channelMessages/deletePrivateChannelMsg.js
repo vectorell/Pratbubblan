@@ -1,6 +1,6 @@
 export async function deletePrivateChannelMsg(msgIndex, channelId, token) {
-    console.log('deleteChannelMsg: msgIndex: ', msgIndex)
-    console.log('deleteChannelMsg: channelId: ', channelId)
+    // console.log('deleteChannelMsg: msgIndex: ', msgIndex)
+    // console.log('deleteChannelMsg: channelId: ', channelId)
 
     const data = {
         channelId: channelId

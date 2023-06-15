@@ -1,7 +1,7 @@
 export async function deleteUser(obj) {
     const baseUrl = `/api/auth/delete-user/${obj.uuid}`
 
-    console.log('OBEJTKT : ', obj)
+    // console.log('OBEJTKT : ', obj)
 
     let options = {
         method: 'DELETE',

@@ -1,6 +1,6 @@
 export async function postPrivateChannelMessage(obj) {
 
-    console.log('postChannelMesage: obj: ', obj)
+    // console.log('postChannelMesage: obj: ', obj)
 
     let msgData = {
         msgBody: obj.msgBody,
@@ -20,11 +20,11 @@ export async function postPrivateChannelMessage(obj) {
             body: JSON.stringify(msgData)
         }
 
-        console.log('postChannelMessage: options: ', options)
+        // console.log('postChannelMessage: options: ', options)
     
         const response = await fetch(baseUrl, options)
         let parsedData = await response.json()
-        console.log('parsedData: ', parsedData)
+        // console.log('parsedData: ', parsedData)
 
         return
         

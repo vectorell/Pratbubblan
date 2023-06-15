@@ -1,7 +1,3 @@
-// let username = 'pelle1337'
-// let password = 'pelle1337'
-
-
 export async function loginUser(username, password) {
 
     try {
@@ -20,7 +16,7 @@ export async function loginUser(username, password) {
     
         const response = await fetch(baseUrl, options)
         let parsedData = await response.json()
-        console.log(parsedData)
+        // console.log(parsedData)
 
         return parsedData
         

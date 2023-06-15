@@ -10,6 +10,7 @@ function App() {
 
     async function checkIfLoggedIn(token) {
         let rawCookie = document.cookie;
+        // console.log(rawCookie)
 
         // let testCookie = rawCookie.split('=')[1]
 
@@ -17,7 +18,7 @@ function App() {
         //   return
         // }
 
-        if (rawCookie) {
+        if (rawCookie !== 'user_cookie=') {
             let cookie = JSON.parse(rawCookie.split("=")[1]);
             setIsLoggedIn(cookie);
         }

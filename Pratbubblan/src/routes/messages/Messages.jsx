@@ -35,7 +35,7 @@ export function Messages() {
     }
 
     async function sendMessage() {
-        console.log("sendMessage: isLoggedIn.token: ", isLoggedIn.token);
+        // console.log("sendMessage: isLoggedIn.token: ", isLoggedIn.token);
         function containsOnlySpaces(string) {
             return /^\s*$/.test(string);
         }
@@ -60,19 +60,19 @@ export function Messages() {
             conversationId: currentConversation._id,
         };
 
-        console.log(msgObject);
+        // console.log(msgObject);
 
         await postDmMessage(msgObject);
         messageInput.current.value = "";
 
-        console.log("currentReciever: ", currentReciever);
+        // console.log("currentReciever: ", currentReciever);
         await fetchOrCreateConversation(
             isLoggedIn.uuid,
             currentReciever._id,
             isLoggedIn.token
         );
 
-        console.log("currentConversation: ", currentConversation);
+        // console.log("currentConversation: ", currentConversation);
 
         setCurrentConversation((prevConversation) => {
             const updatedMessages = [...prevConversation.messages, msgObject];
@@ -86,20 +86,20 @@ export function Messages() {
         if (sender === isLoggedIn.name) {
             setEditMessage(!editMessage);
             setCurrentlyEditing(!currentlyEditing);
-            console.log(clickedUser);
+            // console.log(clickedUser);
             let channelMSGS = await fetchOrCreateConversation(
                 isLoggedIn.uuid,
                 currentReciever._id,
                 isLoggedIn.token
             );
-            console.log("channelMSGS: ", channelMSGS.messages);
+            // console.log("channelMSGS: ", channelMSGS.messages);
         }
     }
 
     async function editUserMessage(e) {
         e.preventDefault();
         setCurrentlyEditing(!currentlyEditing);
-
+        
         try {
             let msgObj = {
                 msgBody: editInputValue,
@@ -111,15 +111,16 @@ export function Messages() {
                 token: isLoggedIn.token,
                 userIndex: userIndex,
             };
-
+            
             await putEditMessage(msgObj);
-
+            
             setCurrentConversation((prevConversation) => {
                 const updatedMessages = [...prevConversation.messages];
                 updatedMessages[userIndex] = msgObj;
-
+                
                 return { ...prevConversation, messages: updatedMessages };
             });
+            return
         } catch (error) {}
         console.log('fel')
     }
@@ -128,7 +129,7 @@ export function Messages() {
         e.preventDefault();
         setCurrentlyEditing(!currentlyEditing);
 
-        console.log(userIndex);
+        // console.log(userIndex);
 
         try {
             await deleteMsg(

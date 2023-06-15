@@ -3,6 +3,6 @@ export async function getAllUsers() {
 
     let response = await fetch (baseUrl)
     let parsedResponse = await response.json()
-    console.log(parsedResponse)
+    // console.log(parsedResponse)
     return parsedResponse
 }
