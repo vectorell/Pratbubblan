@@ -2,11 +2,12 @@ import "./App.css";
 import { Header } from "./components/Header/Header";
 import { MainContent } from "./components/MainContent/MainContent";
 import { useRecoilState } from "recoil";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { loginState } from "./recoil/atoms/loginState";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+    const [rerender, setRerender] = useState(0)
 
     async function checkIfLoggedIn(token) {
         let rawCookie = document.cookie;
@@ -37,7 +38,7 @@ function App() {
     return (
         <div className="App">
             <div>
-                <Header />
+                <Header render={rerender} setRerender={setRerender}/>
             </div>
             <MainContent />
             {/* <Sidebar /> */}

@@ -40,7 +40,18 @@
     margin-left: 0.7em;
     color: rgb(0, 255, 0);
 }
+.PrivateChannel #sent-at {
+    color:rgba(255, 255, 255, 0.662);
+    font-size: 0.8em;
+    align-self: center;
+    padding: 0.5em;
+    transition: 0.2s;
+}
 
+.PrivateChannel #sent-at:hover {
+    color:rgb(255, 255, 255);
+    font-size: 0.9em;
+}
 .message {
     border: 1px solid rgba(126, 126, 126, 0.299);
     border-radius: 0.5em;

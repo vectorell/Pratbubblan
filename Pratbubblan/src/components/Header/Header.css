@@ -30,6 +30,18 @@
 
 .Header button {
     margin-right: 0.5em;
+    background-color: black;
+    border:none;
+    padding: 0.3em;
+    transition: 0.2s;
+}
+.Header button:hover {
+    margin-right: 0.5em;
+    background-color: rgb(41, 41, 41);
+    cursor: pointer;
+    border:none;
+    padding: 0.3em;
+    transition: 0.2s;
 }
 
 .Header .header-buttons {

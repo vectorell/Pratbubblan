@@ -36,6 +36,19 @@ body {
   width: 100vw;
   min-height: 100vh;
 }
+button {
+  background-color: black;
+  border: none;
+  color: white;
+  transition: 0.2s;
+  padding: 0.5em 1em;
+}
+button:hover {
+  background-color: rgb(255, 255, 255);
+  border: none;
+  color: rgb(0, 0, 0);
+  transition: 0.2s;
+}
 
 /* h1 {
   font-size: 3.2em;

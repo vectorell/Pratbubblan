@@ -8,11 +8,15 @@ import { NavLink } from 'react-router-dom'
 import { getAllChannels } from '../../utils/AJAX/channels/getAllChannels'
 import { getPrivateChannels } from '../../utils/AJAX/privateChannels/getPrivateChannels'
 import { privateChannelsState } from '../../recoil/atoms/privateChannelsState'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
-export function Header() {
+export function Header({rerender, setRerender}) {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
     const [userLoggedIn, setUserLoggedIn] = useRecoilState(loggedInUser)
     const [privateChannels, setPrivateChannels] = useRecoilState(privateChannelsState)
+    const navigate = useNavigate();
+    // const [rerender, setRerender] = useState(0)
 
     const inputUsername = useRef(null)
     const inputPassword = useRef(null)
@@ -64,12 +68,17 @@ export function Header() {
         document.cookie = `user_cookie=${JSON.stringify(user)}; expires=${d.toUTCString()}`
     }
 
-    function handleLogout() {
+    async function handleLogout() {
         // document.cookie = "user_cookie; expires=Thu, 01 Jan 1970 00:00:00 UTC";
         let d = new Date()
         d.toUTCString
         // console.log(d)
         document.cookie=`user_cookie=; `
+        navigate("/")
+        setRerender(rerender + 1)
+        setIsLoggedIn('')
+        setPrivateChannels([])
+        return
     }
 
     return (

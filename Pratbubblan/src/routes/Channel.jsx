@@ -179,7 +179,7 @@ export function Channel() {
                             <h4> {message.senderName}:</h4>
                             <p>{message.msgBody} </p>
                         </div>
-                        <p id="sent-at">{message.sentAt}</p>
+                        <p className="sent-at">{message.sentAt}</p>
                     </div>
                 ))}
 

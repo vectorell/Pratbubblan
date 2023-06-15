@@ -19,6 +19,7 @@
 
 .Sidebar a {
     text-decoration: none;
+    color: rgb(48, 152, 255);
 }
 
 .Sidebar a.active {
