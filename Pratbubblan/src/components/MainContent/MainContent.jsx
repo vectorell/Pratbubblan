@@ -27,7 +27,9 @@ export function MainContent() {
             let fetchedChannels = await getAllChannels();
             setChannels(fetchedChannels);
             // console.log(channels);
-        } catch (error) {}
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async function fetchPrivateChannels(token) {

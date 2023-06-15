@@ -17,11 +17,16 @@ function App() {
         // if (testCookie === '') {
         //   return
         // }
-
-        if (rawCookie !== 'user_cookie=') {
-            let cookie = JSON.parse(rawCookie.split("=")[1]);
+        let cookieValue = rawCookie.split("=")[1];
+        if (cookieValue) {
+            let cookie = JSON.parse(cookieValue);
             setIsLoggedIn(cookie);
         }
+
+        // if (rawCookie !== 'user_cookie=') {
+        //     let cookie = JSON.parse(rawCookie.split("=")[1]);
+        //     setIsLoggedIn(cookie);
+        // }
         return;
     }
 
