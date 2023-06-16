@@ -14,10 +14,14 @@
     justify-content: center;
     align-items: flex-end;
     padding: 0.5em;
+    flex-wrap: wrap;
 }
 
 .Header div {
     margin: 0em 0.5em;
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-direction: column; */
 }
 
 .Header h1 {
@@ -55,4 +59,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+@media(max-width: 800px) {
+    .Header {
+        flex-direction: column;
+    }
+
+    .Header button {
+        margin: 0.5em;
+    }
 }

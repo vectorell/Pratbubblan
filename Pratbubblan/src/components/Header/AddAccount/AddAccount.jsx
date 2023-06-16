@@ -37,7 +37,7 @@ export function AddAccount() {
     }
 
     return (
-        <div className="EditAccount">
+        <div className="AddAccount">
             <h1> Hej, {isLoggedIn.name}! </h1>
             <h2> Lägg till ett nytt konto </h2>
 

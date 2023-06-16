@@ -40,3 +40,13 @@
     color: gray;
     text-decoration: line-through;
 }
+
+@media(max-width: 800px) {
+    .ChannelList h3 {
+        font-size: 1em;
+    }
+
+    .ChannelList p {
+        font-size: 1.1em;
+    }
+}

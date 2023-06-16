@@ -110,3 +110,21 @@
 }
 
 
+@media(max-width: 800px) {
+    .Channel .message {
+        display: flex;
+        flex-direction: column;
+        font-size: 1em;
+        align-items: flex-start;
+    }
+
+    .Channel div:nth-child(1) {
+        display: unset;
+        align-items: unset;
+    }
+
+    .Channel p {
+        margin-left: unset;
+        color: rgb(0, 255, 0);
+    }
+}

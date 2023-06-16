@@ -41,3 +41,13 @@
     color: gray;
     text-decoration: line-through;
 }
+
+@media(max-width: 800px) {
+    .DmList h3 {
+        font-size: 1em;
+    }
+
+    .DmList p {
+        font-size: 1.1em;
+    }
+}
