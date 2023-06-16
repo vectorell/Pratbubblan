@@ -57,7 +57,7 @@
     border-radius: 0.5em;
     padding: 0.3em 0.5em;
     margin-top: 0.5em;
-    max-width: fit-content;
+    width: fit-content;
     box-shadow: 1px 1px 11px rgba(0, 0, 0, 0.59);
     margin-left: 1em;
 }
@@ -107,7 +107,7 @@
         font-size: 1em;
         align-items: flex-start;
     }
-
+    
     .PrivateChannel div:nth-child(1) {
         display: unset;
         align-items: unset;
@@ -116,5 +116,9 @@
     .PrivateChannel p {
         margin-left: unset;
         color: rgb(0, 255, 0);
+    }
+
+    .PrivateChannel #sent-at {
+        display: none;
     }
 }

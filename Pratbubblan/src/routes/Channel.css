@@ -116,6 +116,8 @@
         flex-direction: column;
         font-size: 1em;
         align-items: flex-start;
+        margin: unset;
+        margin: 1em 0.5em;
     }
 
     .Channel div:nth-child(1) {
@@ -126,5 +128,9 @@
     .Channel p {
         margin-left: unset;
         color: rgb(0, 255, 0);
+    }
+
+    .Channel .sent-at {
+        display: none;
     }
 }
