@@ -139,7 +139,7 @@ router.post('/channelmessages/private', authenticateToken, async (req, res) => {
 })
 
 // Ändra på publikt meddelande
-router.put('/:channelId/:msgIndex', async (req,res) => {
+router.put('/:channelId/:msgIndex', authenticateToken, async (req,res) => {
     const channelId = req.params.channelId
     const msgIndex = req.params.msgIndex
     let maybeMessage = req.body
@@ -173,7 +173,7 @@ router.put('/:channelId/:msgIndex', async (req,res) => {
 })
 
 // Ändra på privat kanalmeddelande
-router.put('/private/:channelId/:msgIndex', async (req,res) => {
+router.put('/private/:channelId/:msgIndex', authenticateToken, async (req,res) => {
     const channelId = req.params.channelId
     const msgIndex = req.params.msgIndex
     let maybeMessage = req.body

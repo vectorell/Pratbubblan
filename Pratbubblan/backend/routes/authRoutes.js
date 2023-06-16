@@ -177,7 +177,7 @@ router.delete('/delete-user/:uuid', authenticateToken, async (req,res) => {
 
 
 // [GET - Skapa eller hämta konversation (DM)]
-router.get('/conversation/:firstid/:secondid', async (req, res) => {
+router.get('/conversation/:firstid/:secondid', authenticateToken, async (req, res) => {
     let firstId = req.params.firstid
     let secondId = req.params.secondid
 
@@ -296,7 +296,7 @@ router.get('/channels/:id', async (req,res) => {
 })
 
 // [CHANNELS - POST] - Lägg till kanal
-router.post('/channels', async (req, res) => {
+router.post('/channels', authenticateToken, async (req, res) => {
     let maybeChannel = req.body
     
     // VALIDERING
@@ -335,7 +335,7 @@ router.post('/channels', async (req, res) => {
 })
 
 // Skicka direktmeddelande
-router.post('/messages', async (req, res) => {
+router.post('/messages', authenticateToken, async (req, res) => {
     let maybeMsg = req.body
 
     let validMessage = validateDmMsg(maybeMsg)
