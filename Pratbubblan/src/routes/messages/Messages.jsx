@@ -10,6 +10,7 @@ import "./Messages.css";
 import { fetchOrCreateConversation } from "../../utils/AJAX/conversation/fetchOrCreateConversation";
 import { putEditMessage } from "../../utils/AJAX/dmMessages/putEditMessage";
 import { deleteMsg } from "../../utils/AJAX/dmMessages/deleteMsg";
+import loadingSpinner from "../../recoil/atoms/isLoading";
 
 export function Messages() {
     const [currentConversation, setCurrentConversation] = useRecoilState(
@@ -25,6 +26,7 @@ export function Messages() {
     const [editInputValue, setEditInputValue] = useState("");
     const [updateComponent, setUpdateComponent] = useState(false);
     const [userIndex, setUserIndex] = useState(0);
+    const [isLoading, setIsLoading] = useRecoilState(loadingSpinner)
 
     const messageInput = useRef(null);
     const editMessageInput = useRef(null);
@@ -48,7 +50,9 @@ export function Messages() {
             return;
         }
 
-        let sender = await getSpecificUser(isLoggedIn.uuid);
+        setIsLoading(true)
+        try {
+            let sender = await getSpecificUser(isLoggedIn.uuid);
 
         let msgObject = {
             msgBody: messageInput.current.value,
@@ -78,6 +82,12 @@ export function Messages() {
             const updatedMessages = [...prevConversation.messages, msgObject];
             return { ...prevConversation, messages: updatedMessages };
         });
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
+        
     }
 
     async function handleEdit(sender, index) {
@@ -99,7 +109,7 @@ export function Messages() {
     async function editUserMessage(e) {
         e.preventDefault();
         setCurrentlyEditing(!currentlyEditing);
-        
+        setIsLoading(true)
         try {
             let msgObj = {
                 msgBody: editInputValue,
@@ -121,8 +131,12 @@ export function Messages() {
                 return { ...prevConversation, messages: updatedMessages };
             });
             return
-        } catch (error) {}
-        console.log('fel')
+        } catch (error) {
+            console.log('fel')
+
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     async function deleteUserMessage(e) {
@@ -130,7 +144,7 @@ export function Messages() {
         setCurrentlyEditing(!currentlyEditing);
 
         // console.log(userIndex);
-
+        setIsLoading(true)
         try {
             await deleteMsg(
                 userIndex,
@@ -146,7 +160,11 @@ export function Messages() {
                 ...prevConversation,
                 messages: updatedMessages,
             }));
-        } catch (error) {}
+        } catch (error) {
+
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     function handleInputClick(e) {

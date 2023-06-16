@@ -14,6 +14,7 @@ import { currentRecieverState } from "../../recoil/atoms/currentReciever";
 import { currentConversationState } from "../../recoil/atoms/currentConversationState";
 import { putEditPrivateChannelMessage } from "../../utils/AJAX/channelMessages/putEditPrivateChannelMessage";
 import { deletePrivateChannelMsg } from "../../utils/AJAX/channelMessages/deletePrivateChannelMsg";
+import loadingSpinner from "../../recoil/atoms/isLoading";
 
 export function PrivateChannel() {
     const { channelId } = useParams();
@@ -28,6 +29,8 @@ export function PrivateChannel() {
     const [userIndex, setUserIndex] = useState(0);
     const [editMessage, setEditMessage] = useState(false);
     const [editInputValue, setEditInputValue] = useState("");
+    const [isLoading, setIsLoading] = useRecoilState(loadingSpinner)
+
 
     const messageInput = useRef(null);
     const editMessageInput = useRef(null);
@@ -55,7 +58,9 @@ export function PrivateChannel() {
             return;
         }
 
-        //TODO
+        setIsLoading(true)
+        try {
+            //TODO
         let sender = await getSpecificUser(isLoggedIn.uuid);
 
         let msgObject = {
@@ -78,6 +83,13 @@ export function PrivateChannel() {
             const updatedMessages = [...prevChannel.messages, msgObject];
             return { ...prevChannel, messages: updatedMessages };
         });
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
+
+        
     }
 
     async function handleEdit(sender, index) {
@@ -93,7 +105,7 @@ export function PrivateChannel() {
     async function editUserMessage(e) {
         e.preventDefault();
         setCurrentlyEditing(!currentlyEditing);
-
+        setIsLoading(true)
         try {
             let msgObj = {
                 msgBody: editInputValue,
@@ -123,6 +135,8 @@ export function PrivateChannel() {
             });
         } catch (error) {
             console.log("fel");
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -131,7 +145,7 @@ export function PrivateChannel() {
         setCurrentlyEditing(!currentlyEditing);
 
         // console.log(userIndex);
-
+        setIsLoading(true)
         try {
             await deletePrivateChannelMsg(
                 userIndex,
@@ -150,7 +164,11 @@ export function PrivateChannel() {
 
             let updatedChannels = await getPrivateChannels(isLoggedIn.token);
             setPrivateChannels(updatedChannels);
-        } catch (error) {}
+        } catch (error) {
+
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     function handleChange() {

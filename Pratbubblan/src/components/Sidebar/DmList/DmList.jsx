@@ -7,6 +7,7 @@ import { loggedInUser } from "../../../recoil/atoms/loggedInUser";
 import { fetchOrCreateConversation } from "../../../utils/AJAX/conversation/fetchOrCreateConversation";
 import { currentConversationState } from "../../../recoil/atoms/currentConversationState";
 import { currentRecieverState } from "../../../recoil/atoms/currentReciever";
+import loadingSpinner from "../../../recoil/atoms/isLoading";
 
 export function DmList() {
     const [users, setUsers] = useRecoilState(usersListState);
@@ -16,6 +17,7 @@ export function DmList() {
     );
     const [currentReciever, setCurrentReciever] =
         useRecoilState(currentRecieverState);
+    const [isLoading, setIsLoading] = useRecoilState(loadingSpinner)
 
     // TODO
     function filterOutLoggedInUser() {
@@ -26,14 +28,22 @@ export function DmList() {
     }
 
     async function handleClick(currentUser, recieverUser, token) {
-        let check = await fetchOrCreateConversation(
-            currentUser,
-            recieverUser._id,
-            token
-        );
-        setCurrentConversation(check);
-        // console.log("check: ", check);
-        setCurrentReciever(recieverUser);
+        setIsLoading(true)
+        try {
+            let check = await fetchOrCreateConversation(
+                currentUser,
+                recieverUser._id,
+                token
+            );
+            setCurrentConversation(check);
+            // console.log("check: ", check);
+            setCurrentReciever(recieverUser);
+            
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (

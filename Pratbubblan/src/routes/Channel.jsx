@@ -11,6 +11,7 @@ import { loginState } from "../recoil/atoms/loginState";
 import { privateChannelsState } from "../recoil/atoms/privateChannelsState";
 import { putEditChannelMessage } from "../utils/AJAX/channelMessages/putEditChannelMessage";
 import { deleteChannelMsg } from "../utils/AJAX/channelMessages/deleteChannelMsg";
+import loadingSpinner from "../recoil/atoms/isLoading";
 
 export function Channel() {
     const { channelId } = useParams();
@@ -25,6 +26,7 @@ export function Channel() {
     const [userIndex, setUserIndex] = useState(0);
     const [editMessage, setEditMessage] = useState(false);
     const [editInputValue, setEditInputValue] = useState("");
+    const [isLoading, setIsLoading] = useRecoilState(loadingSpinner)
 
     const messageInput = useRef(null);
     const editMessageInput = useRef(null);
@@ -62,7 +64,10 @@ export function Channel() {
             return;
         }
 
-        //TODO
+        setIsLoading(true)
+
+        try {
+            //TODO
         let sender = await getSpecificUser(isLoggedIn.uuid);
 
         let msgObject = {
@@ -85,21 +90,35 @@ export function Channel() {
             const updatedMessages = [...prevChannel.messages, msgObject];
             return { ...prevChannel, messages: updatedMessages };
         });
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
+        
     }
 
     async function handleEdit(sender, index) {
-        setUserIndex(index);
-
-        if (sender === isLoggedIn.name) {
-            setEditMessage(!editMessage);
-            setCurrentlyEditing(!currentlyEditing);
+        setIsLoading(true)
+        try {
+            setUserIndex(index);
+    
+            if (sender === isLoggedIn.name) {
+                setEditMessage(!editMessage);
+                setCurrentlyEditing(!currentlyEditing);
+            }
+            
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
         }
     }
 
     async function editUserMessage(e) {
         e.preventDefault();
         setCurrentlyEditing(!currentlyEditing);
-
+        setIsLoading(true)
         try {
             let msgObj = {
                 msgBody: editInputValue,
@@ -123,13 +142,15 @@ export function Channel() {
             });
         } catch (error) {
             console.log("fel");
+        } finally {
+            setIsLoading(false)
         }
     }
 
     async function deleteUserMessage(e) {
         e.preventDefault();
         setCurrentlyEditing(!currentlyEditing);
-
+        setIsLoading(true)
         try {
             await deleteChannelMsg(
                 userIndex,
@@ -150,6 +171,8 @@ export function Channel() {
             setChannels(updatedChannels);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsLoading(false)
         }
     }
 

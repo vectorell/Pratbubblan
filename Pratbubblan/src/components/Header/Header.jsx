@@ -10,13 +10,18 @@ import { getPrivateChannels } from '../../utils/AJAX/privateChannels/getPrivateC
 import { privateChannelsState } from '../../recoil/atoms/privateChannelsState'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import loadingSpinnerGif from '../../assets/loadingspinner.gif'
+import loadingSpinner from '../../recoil/atoms/isLoading'
+
 
 export function Header({rerender, setRerender}) {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
     const [userLoggedIn, setUserLoggedIn] = useRecoilState(loggedInUser)
     const [privateChannels, setPrivateChannels] = useRecoilState(privateChannelsState)
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useRecoilState(loadingSpinner)
     // const [rerender, setRerender] = useState(0)
+    const loaderRef = useRef(null)
 
     const inputUsername = useRef(null)
     const inputPassword = useRef(null)
@@ -26,12 +31,15 @@ export function Header({rerender, setRerender}) {
         // if (testCookie === '' || testCookie === undefined || testCookie === null) {
         //     return
         // }
+        setIsLoading(true)
         try {
             let fetchedPrivateChannels = await getPrivateChannels(token)
             setPrivateChannels(fetchedPrivateChannels)
             // console.log(channels)
         } catch (error) {
             
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -44,8 +52,9 @@ export function Header({rerender, setRerender}) {
         if (username === "" || password === "") {
             return
         }
-
-        // let result = await 
+        setIsLoading(true)
+        try {
+            // let result = await 
         // console.log(result)
         let user = await loginUser(username, password)
         // console.log(user)
@@ -66,26 +75,44 @@ export function Header({rerender, setRerender}) {
         let d = new Date()
         d.setTime(d.getTime() + (1*60*60*1000))
         document.cookie = `user_cookie=${JSON.stringify(user)}; expires=${d.toUTCString()}`
+        return
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
+        
     }
 
     async function handleLogout() {
-        // document.cookie = "user_cookie; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-        let d = new Date()
-        d.toUTCString
-        // console.log(d)
-        document.cookie=`user_cookie=; `
-        navigate("/")
-        setRerender(rerender + 1)
-        setIsLoggedIn('')
-        setPrivateChannels([])
-        return
+        setIsLoading(true)
+        try {
+            // document.cookie = "user_cookie; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            let d = new Date()
+            d.toUTCString
+            // console.log(d)
+            document.cookie=`user_cookie=; `
+            navigate("/")
+            setRerender(rerender + 1)
+            setIsLoggedIn('')
+            setPrivateChannels([])
+            return
+            
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
         <div className="Header">
-            <h1>Pratbubblan</h1>
+            {isLoading ? <img ref={loaderRef} src={loadingSpinnerGif} style={{ display: 'block', width:'100px' }}/>
+            : <h1>Pratbubblan</h1>
+            }
+            
 
-            {!isLoggedIn && (
+            {(!isLoggedIn && !isLoading) && (
                 <form>
                     <div>
                         <p> Användarnamn </p>
